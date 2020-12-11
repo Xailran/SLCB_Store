@@ -9,24 +9,25 @@ Website: https://www.twitch.tv/xailran
 #############################
 #         Versions          #
 #############################
-1.4.0 - (Public Build 3) Added "Contribute" item type!
+1.5.1 - (Public Build 3.1) Turns out removing the Dev Mode option broke things. Things aren't broken anymore.
+1.5.0 - (Public Build 3) Added "edit" function. Added "unique" item type. Added Discord functionality. PermissionInfo settings are actually followed now
+1.4.1 - Changed !store info failed responses to follow whisper setting
+1.4.0 - Added "Contribute" item type!
 1.3.1 - Minor text changes, bug fixes
 1.3.0 - (Public Build 2) - Added [!store delete] function. Altered file saving system accordingly
 1.2.0 - Added Mixer and YouTube functionality
 1.1.2 - Commands can now be sent as whispers. Added toggle for allowing items to be bought through whispers.
 1.1.1 - Fixed user cooldowns to actually be used!
-1.1.0 - Added [!store toggle] and [!store help] functions
+1.1.0 - Added "toggle" and "help" functions
 1.0.2.1 - (Public Build 1) - Minor text changes
 1.0.2 - Fixed store log to actually use permissions.
 1.0.1 - Minor bug fixes and text changes
 1.0.0 - Initial Release
 
-Recent bug fixes:
-Log now returns correct number of log entries
-Users without enough points can no longer buy items
-Upon successful purchase, users will be told the correct amount of points they have remaining
+Bug fixes since last update:
+Permission Info now fully functions. 
 
-Known bugs:
+Known bugs/issues:
 None
 #####################
 #       Usage       #
@@ -35,6 +36,10 @@ None
 !store add <ItemType> <cost/default> <Item Name>
 Adds a purchasable item for viewers. See below for specifics
 Default cost is the same for each item type, and can be changed in the UI.
+
+!store edit <ItemID> <DataType> <Value>
+Use this command to change something in an existing item
+<DataType> = Item name, type, permission, cost, or cooldown.
 
 !store log <#>
 Shows last <x> purchases (user, time of purchase, item)
@@ -62,14 +67,13 @@ Shows how many items are currently in the store, and points to !store info and b
 
 !store help <function> <function2>
 
-<function> = add, delete, log, toggle, buy, info
-For <function> = add;
-<function2> = general, once, code, contribute/ctb, unique
+<function> = add, delete, edit, log, toggle, buy, info
+For <function> = add; <function2> = general, once, code, contribute/ctb, unique
 
 ###########################
 #   Adding General Items  #
 ###########################
-Can be purchased multiple times, ideal for things such as instagram follows, push-ups, etc.
+Can be purchased multiple times, ideal for things such as push-ups, doing a speed drawing, etc.
 
 !store add general <cost/default> <Item Name>
 
@@ -77,11 +81,12 @@ Can be purchased multiple times, ideal for things such as instagram follows, pus
 #   Adding Items With Codes   #
 ###############################
 Used for items containing sensitive information like codes, will whisper the user the code so it doesn't get snatched up in chat!
+A perfect example of something you would use this item type for, is steam codes.
 
-!store add code <cost/default> <code> <Item Name>
-The <code> must not have any spaces in it, or part of the code will be shown in the item name!!
+!store add code <cost/default> <Item Code> <Item Name>
+The <Item Code> must not have any spaces in it, or part of the code will be shown in the item name!!
 
-Note: This part of the script is removed for YouTube streams, as there is no whisper function to handle sensitive information like codes. A work-around is to use the once-off function for items with codes, and contact the people who purchased those items yourself, in a manner that suits you.
+Note: This part of the script is removed for YouTube streams, as there is no whisper function to handle sensitive information like codes. A solution is to use the once-off function for items with codes, and contact the people who purchased those items yourself, in a manner that suits you. A work-around using discord will be worked on soon.
 
 ######################
 #   Once-Off Items   #
@@ -95,36 +100,37 @@ In a future update, editors (depending on your permission settings) will be able
 #   Contribute Items   #
 ########################
 Once-off items, that the whole stream can work together to buy! Users choose how many points to put towards the item. Once the full price has been paid, the item will be disabled in the store, and reset to its original price.
+Useful for things such as stream goals.
 
 !store add contribute <cost/default> <ItemName>
 OR
 !store add ctb <cost/default> <ItemName>
 
 ####################
-#   Unique Items   #   COMING SOON
+#   Unique Items   #
 ####################
 Once-off items and general items put together! Unique items can be purchased an unlimited number of times, but only once per user. Useful for things such as twitter or instagram follows.
 
 !store add unique <cost/default> <ItemName>
+
+WARNING: If users change their name, they will be able to buy the unique item again
 
 ####################
 #  Future Updates  #
 ####################
 These are not in any particular order, just things I would like to add someday. If you really want to see a particular update, let me know! 
 
-- Add some easter eggs! Eg. !store buy all
+- Add discounts
+	- Flash sales, pick an item from an approved list, and apply a random discount (75%, 50%, 25%, 10%, 5%) for x minutes.
+	- Random discounts applied via command, work similarly to flash sales?
 - Add categories, or a way to display item types differently
-- Change !store info failed responses to follow whisper setting
 - Make more messages customizable
 - If enough people want it, I can add a toggle for "only when live" for each non-mod function (buy, help, info), rather than just the one toggle. The UI is already quite large, hence why I haven't added it already.
 - Add overlay functionality
 - Add sound functionality
-- Add cuztomizable cooldown for general items. (As in, each general item can have its own cooldown, or follow the default)
-- Add Discord functionality
-- Add "Unique" item type. The unique itemtype will be like general, where it can be bought multiple times, but only once per user. This is useful for items such as twitter follows, adding on snapchat, etc.
 - Show top/all contributors to buying a "contribution" type item upon purchase of said item.
-
-By popular request, an inventory system of some sort will be added. I haven't figured out any of the details though. Continue to let me know if you want an inventory system; as more people ask for it, it becomes more important to do!
+- Inventory System
+- Add "Reset" function, to allow unique items to be purchased by those whom have already purchases that item once, or to restore contribute type items to their original price
 
 2.0.0 update will be when data switches from being stored in a txt to a JSON
 - Add [!store convert <#>] command, so that all data can be transferred across without any loss

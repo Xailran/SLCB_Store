@@ -11,7 +11,7 @@
 	"type": "checkbox",
 	"value": false,
 	"label": "Dev Mode Logging",
-	"tooltip": "Log things in the bot! (Next to error symbol)",
+	"tooltip": "Log things in the bot! (Next to error symbol)\r\nDo not leave this setting on when not doing testing!",
 	"group": "General"
 	},
 	"command": {
@@ -19,6 +19,13 @@
 	"value": "!store",
 	"label": "Command name",
 	"tooltip": "The command the bot will respond to",
+	"group": "General"
+	},
+	"EnableDiscord": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Let !store commands be used in Discord",
+	"tooltip": "If checked, users will be able to use the !store in discord. Whisper settings will still be followed.",
 	"group": "General"
 	},
 	"StoreInfoWhisp": {
@@ -131,14 +138,14 @@
 	"type": "dropdown",
 	"value": "Editor",
 	"items": ["Everyone","Regular","Subscriber","GameWisp Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
-	"label": "Store add permission level",
-	"tooltip": "Set a minimum permission level required to add items to the store.",
+	"label": "Store add/edit permission level",
+	"tooltip": "Set a minimum permission level required to add items to the store. The edit function follows this setting as well",
 	"group": "Store Settings"
 	},
 	"StoreAddPermissionInfo": {
 	"type": "textbox",
 	"value": "",
-	"label": "Store add permission level info",
+	"label": "Store add/edit permission level info",
 	"tooltip": "Set a minimum rank, points, hours, or specific user here",
 	"group": "Store Settings"
 	},
@@ -206,7 +213,7 @@
 	"label": "Need more info",
 	"tooltip": "Response when user doesn't specify what item to buy \r\n{0} = user ",
 	"group": "Response Messages"
-	}, 
+	},
 	"itempurchasesuccess": {
 	"type": "textbox",
 	"value": "{0} successfully purchased {1} for {2} {3}!",
@@ -275,6 +282,13 @@
 	"value": "Item {0} has been successfully deleted by {1}",
 	"label": "Store delete success",
 	"tooltip": "Response to confirm that an item has been deleted permanently\r\n{0} = ItemID\r\n{1} = user",
+	"group": "Response Messages"
+	},
+	"EggsEnabled": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Super secret easter eggs!",
+	"tooltip": "See if you can find them all! The prize is your sense of accomplishment",
 	"group": "Response Messages"
 	},
 	"openfolder": {
