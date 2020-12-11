@@ -14,11 +14,25 @@
 	"tooltip": "The command the bot will respond to",
 	"group": "General"
 	},
+	"StoreBuyWhisp": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Allow items to be bought via whisper",
+	"tooltip": "",
+	"group": "General"
+	},
 	"StoreInfoWhisp": {
 	"type": "checkbox",
 	"value": true,
-	"label": "Send !store info as a whisper",
+	"label": "Send !store info response as a whisper",
 	"tooltip": "If checked, !store info responses will be sent in a whisper, rather than in chat",
+	"group": "General"
+	},
+	"StoreHelpWhisp": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Send !store help response as a whisper",
+	"tooltip": "If checked, !store help responses will be sent in a whisper, rather than in chat",
 	"group": "General"
 	},
 	"Permission": {
@@ -94,7 +108,7 @@
 	},
 	"atsdefaultcost": {
 	"type": "numberbox",
-	"value": 500,
+	"value": 5000,
 	"label": "Default item cost",
 	"tooltip": "This value will be used for items created in chat with default cost selected",
 	"group": "Store Settings"
@@ -194,7 +208,7 @@
 	},
 	"listbase": {
 	"type": "textbox",
-	"value": "There are currently {0} items available to be purchased. Use [{1} info <#>] to check an individual item.",
+	"value": "There are currently {0} items available to be purchased. Use [{1} info <#>] to learn about an item, or [{1} buy <#>] to buy an item",
 	"label": "Store count response",
 	"tooltip": "The message shown before listing the items when using !store, without any parameters \r\n{0} = user\r\n{1} = command name",
 	"group": "Response Messages"

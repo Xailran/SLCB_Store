@@ -9,6 +9,9 @@ Website: https://www.twitch.tv/xailran
 #############################
 #         Versions          #
 #############################
+1.1.2 - Commands can now be sent as whispers. Added toggle for allowing items to be bought through whispers.
+1.1.1 - Fixed user cooldowns to actually be used!
+1.1.0 - Added !store toggle and !store help functions
 1.0.2.1 - Minor text changes
 1.0.2 - Fixed store log to actually use permissions.
 1.0.1 - Minor bug fixes and text changes
@@ -22,9 +25,13 @@ Website: https://www.twitch.tv/xailran
 Adds a purchasable item for viewers. See below for specifics
 Default cost changes for each item type, changeable in UI
 
-!store log <x>
+!store log <#>
 Shows last <x> purchases (user, time of purchase, item)
-Default <x> is 10
+Default <#> is 10
+
+!store toggle <#>
+Disables or enables an item, depending on its current setting.
+WARNING: Items with codes are automatically disabled on purchase. Enabling them again could result in giving away a dodgy code!
 
 	ALL VIEWERS
 !store buy <#>
@@ -34,7 +41,11 @@ Purchase item # in the store
 Outputs ItemName, ItemType, and cost of the chosen id
 
 !store
-Shows how many items are currently in the store, all available parameters
+Shows how many items are currently in the store, and points to !store info and buy
+
+!store help <function>
+
+<function> = add, log, toggle, buy, info
 
 ###########################
 #   Adding General Items  #
@@ -62,20 +73,21 @@ In a future update, editors (depending on your permission settings) will be able
 ####################
 #  Future Updates  #
 ####################
-These are not in any particular order, these are just things I would like to add someday.
+These are not in any particular order, just things I would like to add someday.
 
 - Change !store info failed responses to follow whisper setting
-- Add [!store enable/disable <#>], to enable/disable an item within the store.
-- If enough people want it, I can add a toggle for "only when live" for each function (add, buy, log, info, !store), rather than just the one toggle. The UI is already quite large, hence why I haven't added it already.
-- Add [!store help <x>] to provide help with specific parameters in a whisper. Eg. buy or add
+- Make more messages customizable
+- If enough people want it, I can add a toggle for "only when live" for each non-mod function (buy, help, info), rather than just the one toggle. The UI is already quite large, hence why I haven't added it already.
 - Add overlay functionality
 - Add sound functionality
 - Add cuztomizable cooldown for general items. (As in, each general item can have its own cooldown, or follow the default)
 - Add Discord functionality
 - Add Mixer/YT functionality
+- Add [!store add unique <cost/default> <ItemName>]. The unique itemtype will be like general, where it can be bought multiple times, but only once per user. This is useful for items such as twitter follows, adding on snapchat, etc.
 
-ONCE UPDATED TO 2.0.0! (Switching to using a JSON file, rather than multiple txts)
+2.0.0 update will be when data switches from being stored in a txt to a JSON
 - Add [!store convert <#>] command, so that all data can be transferred across without any loss
+
 
 #############################################
 # Tag me in the Streamlabs Chatbot discord  #

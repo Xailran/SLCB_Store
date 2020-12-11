@@ -19,21 +19,22 @@ import winsound
 ScriptName = "Store"
 Website = "https://www.twitch.tv/Xailran"
 Creator = "Xailran"
-Version = "1.0.2.1"
+Version = "1.1.2"
 Description = "Allow your viewers to spend points to buy items or perks that you create!"
 
 """
 Huge thanks to Castorr91, for without his help, this script would not exist.
 Thanks are also due to Bare7a and Mopioid. I appreciate all the assistance you both gave me!
-Also, thank you to anyone who has given/gives feedback or helps me find bugs!
+Finally, thank you to anyone who has given/gives feedback or helps me find bugs!
 """
 
 #---------------------------------------
 # Versions
 #---------------------------------------
 """
-1.0.2.1 Minor text changes
-1.0.2 Fixed Store Log to actually use permissions
+1.1.2 - Commands can now be sent as whispers. Added toggle for allowing items to be bought through whispers.
+1.1.1 - Fixed user cooldowns to actually be used!
+1.1.0 - Added !store toggle and !store help functions
 1.0.0 Initial Release! Please, give me all your feedback!!
 
 Note: Only important updates are saved here. For more details, check the README.txt
@@ -167,7 +168,7 @@ def Init():
 	
 def Execute(data):
 	"""Required Execute data function"""
-	if (not data.IsWhisper() and data.IsFromTwitch() and data.GetParam(0).lower() == MySet.command.lower()):
+	if (data.IsFromTwitch() and data.GetParam(0).lower() == MySet.command.lower()):
 		if not HasPermission(data, MySet.Permission, MySet.PermissionInfo):
 			return
 	
@@ -175,15 +176,20 @@ def Execute(data):
 			SendResp(data, MySet.respNotLive.format(data.UserName))
 			
 		elif (data.GetParam(1) == ""):
+			if not HasPermission(data, MySet.Permission, MySet.PermissionInfo):
+				return
 			command = MySet.command.lower()
 			if IsOnCooldown(data, command):
 				StoreList(data)
 		
 		elif (data.GetParam(1).lower() == "info"):
-			command = MySet.command.lower() + "info"
-			if IsOnCooldown(data, command):
-				ItemID = data.GetParam(2)
-				StoreInfo(data, ItemID, command)
+			if not HasPermission(data, MySet.Permission, MySet.PermissionInfo):
+				return
+			else:
+				command = MySet.command.lower() + "info"
+				if IsOnCooldown(data, command):
+					ItemID = data.GetParam(2)
+					StoreInfo(data, ItemID, command)
 		
 		elif (data.GetParam(1).lower() == "log"):
 			command = MySet.command.lower() + "log"
@@ -212,9 +218,27 @@ def Execute(data):
 					SendResp(data, message)
 			
 		elif (data.GetParam(1).lower() == "buy"):
-			ItemID = data.GetParam(2)
-			Purchase(data, ItemID)
-		
+			if (data.IsWhisper() and not MySet.StoreBuyWhisp):
+				message = "The streamer has disabled item purchases through whispers sorry. Please try again in the chat"
+				SendResp(data,message)
+				return
+			else:
+				ItemID = data.GetParam(2)
+				Purchase(data, ItemID)
+			
+		elif (data.GetParam(1).lower() == "toggle"):
+			if not HasPermission(data, MySet.StoreAddPermission, MySet.StoreAddPermissionInfo):
+				return
+			else:
+				StoreToggle(data)
+			
+		elif (data.GetParam(1).lower() == "help"):
+			if not HasPermission(data, MySet.Permission, MySet.PermissionInfo):
+				return
+			command = MySet.command.lower() + "help"
+			if IsOnCooldown(data, command):
+				StoreHelp(data, command)
+
 		else:
 			message = MySet.info.format(data.UserName, MySet.command.lower())
 			SendResp(data, message)
@@ -229,7 +253,8 @@ def Tick():
 def StoreList(data):
 	command = MySet.command.lower()
 	Path = os.path.join(os.path.dirname(__file__), "Items")
-	Parent.AddCooldown(ScriptName, command, MySet.timerCooldown)
+	Parent.AddCooldown(ScriptName,command,MySet.timerCooldown)
+	Parent.AddUserCooldown(ScriptName,command,data.User,MySet.timerUserCooldown)
 	message = MySet.listbase.format(len([name for name in os.listdir(Path) if os.path.isfile(os.path.join(Path, name))]), command)
 	SendResp(data,message)
 	
@@ -287,6 +312,7 @@ def PurchaseSuccess(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, 
 	ItemCost = int(ItemCost)
 	Parent.RemovePoints(data.User,data.UserName, ItemCost)
 	Parent.AddCooldown(ScriptName, command, ItemCooldown)
+	Parent.AddUserCooldown(ScriptName,command,data.User,MySet.timerUserCooldown)
 	message = MySet.itempurchasesuccess.format(data.UserName, ItemName, ItemCost, Currency)
 	SendResp(data, message)
 	Points = int(Points) - int(ItemCost)
@@ -314,9 +340,22 @@ def StoreInfo(data, ItemID, command):
 			if MySet.StoreInfoWhisp:
 				Parent.SendStreamWhisper(data.UserName,message)
 			else:
-				Parent.AddCooldown(ScriptName,command,ItemCooldown)
+				Parent.AddCooldown(ScriptName,command,MySet.timerCooldown)
+				Parent.AddUserCooldown(ScriptName,command,data.User,MySet.timerUserCooldown)
 				SendResp(data, message)
-			
+
+def StoreToggle(data):
+	ItemID = data.GetParam(2)
+	if LoadItem(data, ItemID):
+		if (ItemSetting.lower() == "disabled"):
+			ItemEnable(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode)
+			message = "Item {0} has been successfully enabled!".format(ItemID)
+			SendResp(data, message)
+		if (ItemSetting.lower() == "enabled"):
+			ItemDisable(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode)
+			message = "Item {0} has been successfully disabled!".format(ItemID)
+			SendResp(data, message)
+
 def ItemDisable(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode):
 	"""when called upon, changes the first line of an item.txt from Enabled to Disabled"""
 	with codecs.open(ItemsPath, "w", "utf-8") as fEtD:
@@ -337,15 +376,19 @@ def StoreAdd(data, ItemType):
 		message = MySet.atsfailed
 		SendResp(data, message)
 		return
+	if ((Parameters <= 5) and (data.GetParam(3).lower() == "code")):
+		message = "Command failed. Command format: !store add code <cost/default> <ItemCode> <ItemName>. Make sure there are no spaces in the code, or it won't save properly!"
+		SendResp(data, message)
+		return
 	ItemSetting = "Enabled"
 	ItemPermission = MySet.Permission
-	if (data.GetParam(3) == "default"):
+	if (data.GetParam(3).lower() == "default"):
 		ItemCost = MySet.atsdefaultcost
 	else:
 		try:
 			int(data.GetParam(3))
 		except:
-			message = "<cost> must be a number, or the word default. " + MySet.atsfailed
+			message = "<cost> must be a number, or the word default. {0} was entered instead".format(data.GetParam(3).upper())
 			SendResp(data, message)
 			return
 		else:
@@ -375,7 +418,7 @@ def StoreAdd(data, ItemType):
 def SaveItemName(data, ItemType, StrtParameters, Parameters):
 	global ItemName
 	ItemName = ""
-	for StrtParameters in range (4, Parameters):
+	for StrtParameters in range (StrtParameters, Parameters):
 		ItemName += (data.GetParam(StrtParameters) + " ")
 		StrtParameters = StrtParameters + 1
 	return ItemName
@@ -408,6 +451,48 @@ def StoreLog(data):
 		message = "Tried to load more log data, but none exists!"
 		SendResp(data, message)
 
+def StoreHelp(data, command):
+	if (data.GetParam(2) == "add"):
+		if (data.GetParam(3) == "general"):
+			message = "[{0} add general <cost/default> <ItemName>] Use this function to add items that can be bought multiple times".format(MySet.command)
+			command = MySet.command.lower() + "help add general"
+		elif (data.GetParam(3) == "once"):
+			message = "[{0} add once <cost/default> <ItemName>] Use this function to add items that can only be purchased once".format(MySet.command)
+			command = MySet.command.lower() + "help add once"
+		elif (data.GetParam(3) == "unique"):
+			message = "New Item type for a future update! [{0} add unique <cost/default> <ItemName>] Use this function to add items that can only be purchased once per user.".format(MySet.command)
+			command = MySet.command.lower() + "help add unique"
+		elif (data.GetParam(3) == "code"):
+			message = "[{0} add code <cost/default> <ItemCode> <ItemName>] use this function to add items that contain a code, so the bot can send a whisper containing the code. Code items can only be purchased once".format(MySet.command)
+			if MySet.StoreHelpWhisp:
+				Parent.SendStreamWhisper(data.UserName,message)
+			else:
+				SendResp(data, message)
+			message = "Make sure there are no spaces in the <ItemCode>, or it won't save properly!"
+			command = MySet.command.lower() + "help add code"
+		else:
+			message = "[{0} add <ItemType> <cost/default> <ItemName>]. Add an item for viewers to purchase with {1}! You can also use !store toggle to enable/disable an existing item in the store. Use !store help add [general/once/code/unique] for more information.".format(MySet.command,Parent.GetCurrencyName())
+			command = MySet.command.lower() + "help add"
+	elif (data.GetParam(2) == "buy"):
+		message = MySet.info.format(data.UserName, MySet.command)
+		command = MySet.command.lower() + "help buy"
+	elif (data.GetParam(2) == "info"):
+		message = MySet.info.format(data.UserName, MySet.command)
+		command = MySet.command.lower() + "help info"
+	elif (data.GetParam(2) == "log"):
+		message = "When you use {0} log #, it will load the last # entries, and post them in chat. If no number is given, it will load the last 10 entries. If # is higher than the amount of entries, the bot will load as many as it can before returning an error message.".format(MySet.command)
+		command = MySet.command.lower() + "help log"
+	elif (data.GetParam(2) == "toggle"):
+		message = "Use [{0} toggle #] to enable or disable the purchase of an existing item! Useful if you have a once-off item that you want to make available, or you don't want a general item to be purchased for whatever reason".format(MySet.command)
+		command = MySet.command.lower() + "help toggle"
+	else:
+		message = "The available parameters for [{0} help <function>] are add, buy, info, log, and toggle".format(MySet.command)
+	if MySet.StoreHelpWhisp:
+		Parent.SendStreamWhisper(data.UserName,message)
+	else:
+		SendResp(data, message)
+	Parent.AddCooldown(ScriptName,command,MySet.timerCooldown)
+	Parent.AddUserCooldown(ScriptName,command,data.User,MySet.timerUserCooldown)
 #---------------------------------------
 # Classes
 #---------------------------------------
@@ -422,7 +507,9 @@ class Settings:
 		else: #set variables if no custom settings file is found
 			self.onlylive = False
 			self.command = "!store"
+			self.StoreBuyWhisp = False
 			self.StoreInfoWhisp = True
+			self.StoreHelpWhisp = False
 			self.Permission = "Everyone"
 			self.PermissionInfo = ""
 			self.togCooldown = True
@@ -433,7 +520,7 @@ class Settings:
 			self.timerUserCooldown = 60
 			self.onusercooldown = "{0} the command is still on user cooldown for {1} seconds!"
 			self.purchaseallow = True
-			self.atsdefaultcost = 500
+			self.atsdefaultcost = 5000
 			self.stf = True
 			self.StoreAddPermission = "Editor"
 			self.StoreAddPermissionInfo = ""
@@ -452,7 +539,7 @@ class Settings:
 			self.notavailable = "{0} -> item {1} isn't an available item"
 			self.notenabled = "{0} -> item {1} is currently disabled"
 			self.notperm = "{0} -> you don't have permission to use this command. permission is: [{1} / {2}]"
-			self.listbase = "There are currently {0} items available to be purchased. Use [{1} info <#>] to check an individual item."
+			self.listbase = "There are currently {0} items available to be purchased. Use [{1} info <#>] to learn about an item, or [{1} buy <#>] to buy an item"
 			self.atssuccess = "{1} has successfully been added by {0}!"
 			self.atsfailed = "Command failed. Command format: !store add <ItemType> <cost/default> <ItemName>"
 			self.storeinfosuccess = "{0} -> {1} ({2}) is available for {4} {5}"
