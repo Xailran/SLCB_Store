@@ -200,6 +200,21 @@
 	"tooltip": "Format of lines saved to the textfile upon successful purchase. \r\n{0} = user \r\n{1} = Item name\r\n{2} = Item cost\r\n{3} = currencyname\r\n{4} = Date & Time\r\n",
 	"group": "Store Settings"
 	},
+	"InvPermission": {
+	"type": "dropdown",
+	"value": "Editor",
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"label": "Inventory reset permission level",
+	"tooltip": "Set a minimum permission level required to reset inventory for a player or the full system",
+	"group": "Store Settings"
+	},
+	"InvPermissionInfo": {
+	"type": "textbox",
+	"value": "",
+	"label": "Store log permission level info",
+	"tooltip": "Set a minimum rank, points, hours, or specific user here",
+	"group": "Store Settings"
+	},
 	"StoreListEnable": {
 	"type": "checkbox",
 	"value": true,
@@ -225,7 +240,7 @@
 	"type": "checkbox",
 	"value": true,
 	"label": "Show disabled items in the list",
-	"tooltip": "If enabled, items that are disabled will be shown in the list. (The list will ",
+	"tooltip": "If enabled, items that are disabled will be shown in the list.",
 	"group": "Store List"
 	},
 	"StoreListShowAll": {
@@ -241,6 +256,20 @@
 	"items": ["Stream Chat","Stream Whisper","Stream Both","Discord Chat","Discord Whisper","Discord Both","Chat Both","Whisper Both","All"],
 	"label": "Usage for !store list all",
 	"tooltip": "Set where the command can be used for listing all items",
+	"group": "Store List"
+	},
+	"StoreListMessage": {
+	"type": "textbox",
+	"value": "Format = Item Name (itemID, item cost). {0}. Page {1}/{2}",
+	"label": "List response",
+	"tooltip": "The response with the list.\r\n{0} = list of items\r\n{1} = current page\r\n{2} = maximum page count",
+	"group": "Store List"
+	},
+	"StoreListFormat": {
+	"type": "textbox",
+	"value": "{0} ({1}, {2}). ",
+	"label": "List format",
+	"tooltip": "The format of each item in the list.\r\n{0} = item name\r\n{1} = item ID\r\n{2} = item cost\r\n{3} = item type\r\n{4} = item setting (enabled or disabled)",
 	"group": "Store List"
 	},
 	"enableSounds": {
@@ -261,7 +290,7 @@
 	"type": "textbox",
 	"value": "name.mp3",
 	"label": "Sound File",
-	"tooltip": "Sound must be stored in the sounds folder to successfully play.\r\nMust be a .mp3 file",
+	"tooltip": "Sound must be stored in the sounds folder to successfully play.\r\nMust be a .mp3 file\r\nThis sound will be played if no sound is assigned to the item being purchased",
 	"group": "Sounds"
 	},
 	"volume": {
@@ -320,7 +349,14 @@
 	"type": "textbox",
 	"value": "{0} -> you don't have permission to use this command. permission is: [{1} / {2}]",
 	"label": "Not permitted",
-	"tooltip": "Message to send when the user permission doesn't match command permission \r\n{0} = user \r\n{1} = permission\r\n{2} = Info",
+	"tooltip": "Message to send when the user permission doesn't match command permission \r\n{0} = user \r\n{1} = permission\r\n{2} = permission info",
+	"group": "Response Messages"
+	},
+	"quantitytoolow": {
+	"type": "textbox",
+	"value": "{0} -> there aren't any remaining copies of item {1}",
+	"label": "Quantity of item too low",
+	"tooltip": "Message to send when an item has ran out of copies \r\n{0} = user \r\n{1} = item user tried to buy",
 	"group": "Response Messages"
 	},
 	"incorrectusage": {
@@ -363,6 +399,13 @@
 	"value": "Item {0} has been successfully deleted by {1}",
 	"label": "Store delete success",
 	"tooltip": "Response to confirm that an item has been deleted permanently\r\n{0} = ItemID\r\n{1} = user",
+	"group": "Response Messages"
+	},
+	"InvMsg": {
+	"type": "textbox",
+	"value": "{0}, the following items are in your inventory: {1}",
+	"label": "Inventory Report",
+	"tooltip": "Response to default '!store inventory' command that has list of items the user has\r\n{0} = user\r\n{1} = list of items",
 	"group": "Response Messages"
 	},
 	"EggsEnabled": {
