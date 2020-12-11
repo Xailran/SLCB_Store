@@ -7,13 +7,6 @@
 	"tooltip": "Command is only active when stream is live.",
 	"group": "General"
 	},
-	"enabledDevMode": {
-	"type": "checkbox",
-	"value": false,
-	"label": "Dev Mode Logging",
-	"tooltip": "Log things in the bot! (Next to error symbol)\r\nDo not leave this setting on when not doing testing!",
-	"group": "General"
-	},
 	"command": {
 	"type": "textbox",
 	"value": "!store",
@@ -21,7 +14,7 @@
 	"tooltip": "The command the bot will respond to",
 	"group": "General"
 	},
-	"EnableDiscord": {
+	"EnabledDiscord": {
 	"type": "checkbox",
 	"value": true,
 	"label": "Let !store commands be used in Discord",
@@ -45,7 +38,7 @@
 	"Permission": {
 	"type": "dropdown",
 	"value": "Everyone",
-	"items": ["Everyone","Regular","Subscriber","GameWisp Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
 	"label": "Permission level",
 	"tooltip": "Set a minimum permission level required to use the store!",
 	"group": "General"
@@ -137,7 +130,7 @@
 	"StoreAddPermission": {
 	"type": "dropdown",
 	"value": "Editor",
-	"items": ["Everyone","Regular","Subscriber","GameWisp Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
 	"label": "Store add/edit permission level",
 	"tooltip": "Set a minimum permission level required to add items to the store. The edit function follows this setting as well",
 	"group": "Store Settings"
@@ -166,7 +159,7 @@
 	"StoreDelPermission": {
 	"type": "dropdown",
 	"value": "Caster",
-	"items": ["Everyone","Regular","Subscriber","GameWisp Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
 	"label": "Store delete permission level info",
 	"tooltip": "Set a minimum permission level required to permanently delete items from the store.\r\nDELETING CANNOT BE UNDONE. TAKE EXTREME CAUTION USING THIS FUNCTION",
 	"group": "Store Settings"
@@ -188,7 +181,7 @@
 	"StoreLogPermission": {
 	"type": "dropdown",
 	"value": "Editor",
-	"items": ["Everyone","Regular","Subscriber","GameWisp Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
 	"label": "Store log permission level",
 	"tooltip": "Set a minimum permission level required to access the store log",
 	"group": "Store Settings"
@@ -207,32 +200,69 @@
 	"tooltip": "Format of lines saved to the textfile upon successful purchase. \r\n{0} = user \r\n{1} = Item name\r\n{2} = Item cost\r\n{3} = currencyname\r\n{4} = Date & Time\r\n",
 	"group": "Store Settings"
 	},
-	"StoreInvEnable": {
+	"InvPermission": {
+	"type": "dropdown",
+	"value": "Editor",
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"label": "Inventory reset permission level",
+	"tooltip": "Set a minimum permission level required to reset inventory for a player or the full system",
+	"group": "Store Settings"
+	},
+	"InvPermissionInfo": {
+	"type": "textbox",
+	"value": "",
+	"label": "Store log permission level info",
+	"tooltip": "Set a minimum rank, points, hours, or specific user here",
+	"group": "Store Settings"
+	},
+	"StoreListEnable": {
 	"type": "checkbox",
 	"value": true,
-	"label": "Enable store inventory",
-	"tooltip": "If enabled, all items will go into a users inventory, rather than being claimed immediately",
-	"group": "Store Inventory"
+	"label": "Enable Store List",
+	"tooltip": "Users will be able to use the list function to view a range of items simultaneously",
+	"group": "Store List"
 	},
-	"StoreTradingEnable": {
+	"StoreListWhisp": {
 	"type": "checkbox",
-	"value": true,
-	"label": "Enable trading",
-	"tooltip": "If enabled, users will be able to sell items from their inventory",
-	"group": "Store Inventory"
+	"value": false,
+	"label": "Send !store list response as a whisper",
+	"tooltip": "If checked, !store list responses will be sent in a whisper, rather than in chat",
+	"group": "Store List"
 	},
-	"StoreTradingCut": {
+	"StoreListNumber": {
 	"type": "numberbox",
-	"value": 0,
-	"label": "Store trading cut",
-	"tooltip": "Percentage of sales made from trades that the store will claim",
-	"group": "Store Inventory"
+	"value": 10,
+	"label": "Items per page",
+	"tooltip": "Sets amount of items shown per page of the list",
+	"group": "Store List"
+	},
+	"StoreListShowDisabled": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Show disabled items in the list",
+	"tooltip": "If enabled, items that are disabled will be shown in the list. (The list will ",
+	"group": "Store List"
+	},
+	"StoreListShowAll": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Show all items in one page",
+	"tooltip": "If enabled, the '!store list all' command will become available, and it will show all items as one page",
+	"group": "Store List"
+	},
+	"SLSAusage": {
+	"type": "dropdown",
+	"value": "Stream Chat",
+	"items": ["Stream Chat","Stream Whisper","Stream Both","Discord Chat","Discord Whisper","Discord Both","Chat Both","Whisper Both","All"],
+	"label": "Usage for !store list all",
+	"tooltip": "Set where the command can be used for listing all items",
+	"group": "Store List"
 	},
 	"enableSounds": {
 	"type": "checkbox",
 	"value": false,
 	"label": "Enable sounds",
-	"tooltip": "If enabled, sounds will play on successful purchase of an item",
+	"tooltip": "If enabled, sounds will play on successful purchase of an item. If a sound has been assigned to an item, it will overwrite all UI settings",
 	"group": "Sounds"
 	},
 	"randomSounds": {
@@ -247,6 +277,16 @@
 	"value": "name.mp3",
 	"label": "Sound File",
 	"tooltip": "Sound must be stored in the sounds folder to successfully play.\r\nMust be a .mp3 file",
+	"group": "Sounds"
+	},
+	"volume": {
+	"type": "slider",
+	"label": "volume",
+	"value": 50,
+	"min": 1,
+	"max": 100,
+	"ticks": 1,
+	"tooltip": "Sets volume for sfx to be played at",
 	"group": "Sounds"
 	},
 	"respNotLive": {
@@ -298,6 +338,13 @@
 	"tooltip": "Message to send when the user permission doesn't match command permission \r\n{0} = user \r\n{1} = permission\r\n{2} = Info",
 	"group": "Response Messages"
 	},
+	"incorrectusage": {
+	"type": "textbox",
+	"value": "{0} -> That command is designated for use in the following location: {1}",
+	"label": "Store info success",
+	"tooltip": "Response with item information chosen by user \r\n{0} = User \r\n{1} = Usage setting",
+	"group": "Response Messages"
+	},
 	"listbase": {
 	"type": "textbox",
 	"value": "There are currently {0} items in the store. Use [{1} info <#>] to learn about an item, or [{1} buy <#>] to buy an item",
@@ -307,9 +354,9 @@
 	},
 	"atssuccess": {
 	"type": "textbox",
-	"value": "{1} has successfully been added by {0}!",
+	"value": "{1} (ID: {2}) has successfully been added by {0}!",
 	"label": "Add to store successful",
-	"tooltip": "Message sent to chat when '!store add' has succeeded \r\n{0} = user \r\n{1} = Item Name",
+	"tooltip": "Message sent to chat when '!store add' has succeeded \r\n{0} = user \r\n{1} = Item Name\r\n{2} = Item ID",
 	"group": "Response Messages"
 	},
 	"atsfailed": {
@@ -331,6 +378,13 @@
 	"value": "Item {0} has been successfully deleted by {1}",
 	"label": "Store delete success",
 	"tooltip": "Response to confirm that an item has been deleted permanently\r\n{0} = ItemID\r\n{1} = user",
+	"group": "Response Messages"
+	},
+	"InvMsg": {
+	"type": "textbox",
+	"value": "{0}, the following items are in your inventory: {1}",
+	"label": "Inventory Report",
+	"tooltip": "Response to default '!store inventory' command that has list of items the user has\r\n{0} = user\r\n{1} = list of items",
 	"group": "Response Messages"
 	},
 	"EggsEnabled": {
@@ -403,6 +457,13 @@
 	"tooltip": "",
 	"group": "Help Messages"
 	},
+	"helpmessageSession": {
+	"type": "textbox",
+	"value": "[{1} add session <cost/default> <ItemName>] Use this function to add items that can only be purchased once per session. A session ends when the script is restarted, or the bot is closed.",
+	"label": "Adding a 'session' type item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
 	"helpmessageAddCode": {
 	"type": "textbox",
 	"value": "[{1} add code <cost/default> <ItemCode> <ItemName>] use this function to add items that contain a code, so the bot can send a whisper containing the code. Code items can only be purchased once",
@@ -451,7 +512,7 @@
 	"tooltip": "Opens the folder for this script",
 	"function": "OpenFolder",
 	"wsevent": "",
-	"group": ""
+	"group": "Buttons"
 	},
 	"openReadMe": {
 	"type": "button",
@@ -459,7 +520,7 @@
 	"tooltip": "Opens the README.txt for this script",
 	"function": "OpenReadMe",
 	"wsevent": "",
-	"group": ""
+	"group": "Buttons"
 	},
 	"OpenLog": {
 	"type": "button",
@@ -467,7 +528,7 @@
 	"tooltip": "Opens file recording all successful purchases",
 	"function": "OpenLog",
 	"wsevent": "",
-	"group": "Store Settings"
+	"group": "Buttons"
 	},
 	"ResetLog": {
 	"type": "button",
@@ -475,7 +536,7 @@
 	"tooltip": "Resets file recording all successful purchases.\r\nCANNOT BE UNDONE",
 	"function": "ResetLog",
 	"wsevent": "",
-	"group": "Store Settings"
+	"group": "Buttons"
 	},
 	"setdefaults": {
 	"type": "button",
@@ -483,6 +544,6 @@
 	"tooltip": "Restores all script settings to the default ones!",
 	"function": "SetDefaults",
 	"wsevent": "",
-	"group": ""
+	"group": "Buttons"
 	}
 }
