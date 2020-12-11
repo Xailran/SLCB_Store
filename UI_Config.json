@@ -149,6 +149,13 @@
 	"tooltip": "Set a minimum rank, points, hours, or specific user here",
 	"group": "Store Settings"
 	},
+	"DeleteOnRedeemCode": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Auto delete code type items",
+	"tooltip": "Code type items will be automatically deleted when purchased.\r\nDELETING ITEMS CANNOT BE UNDONE",
+	"group": "Store Settings"
+	},
 	"StoreDelEnable": {
 	"type": "checkbox",
 	"value": false,
@@ -200,12 +207,54 @@
 	"tooltip": "Format of lines saved to the textfile upon successful purchase. \r\n{0} = user \r\n{1} = Item name\r\n{2} = Item cost\r\n{3} = currencyname\r\n{4} = Date & Time\r\n",
 	"group": "Store Settings"
 	},
+	"StoreInvEnable": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Enable store inventory",
+	"tooltip": "If enabled, all items will go into a users inventory, rather than being claimed immediately",
+	"group": "Store Inventory"
+	},
+	"StoreTradingEnable": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Enable trading",
+	"tooltip": "If enabled, users will be able to sell items from their inventory",
+	"group": "Store Inventory"
+	},
+	"StoreTradingCut": {
+	"type": "numberbox",
+	"value": 0,
+	"label": "Store trading cut",
+	"tooltip": "Percentage of sales made from trades that the store will claim",
+	"group": "Store Inventory"
+	},
+	"enableSounds": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Enable sounds",
+	"tooltip": "If enabled, sounds will play on successful purchase of an item",
+	"group": "Sounds"
+	},
+	"randomSounds": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Play random sounds",
+	"tooltip": "If enabled, a sound will be randomly chosen from the sounds folder to be played",
+	"group": "Sounds"
+	},
+	"soundFile": {
+	"type": "textbox",
+	"value": "name.mp3",
+	"label": "Sound File",
+	"tooltip": "Sound must be stored in the sounds folder to successfully play.\r\nMust be a .mp3 file",
+	"group": "Sounds"
+	},
 	"respNotLive": {
 	"type": "textbox",
 	"value": "Sorry {0}, but the stream must be live in order to use that command.",
 	"label": "Stream not live",
 	"tooltip": "Message that will display if user attempts to use the command while stream is not live. \r\n {0} = User",
-	"group": "Response Messages",
+	"group": "Response Messages"
 	},
 	"info": {
 	"type": "textbox",
@@ -290,6 +339,111 @@
 	"label": "Super secret easter eggs!",
 	"tooltip": "See if you can find them all! The prize is your sense of accomplishment",
 	"group": "Response Messages"
+	},
+	"helpmessageGeneral": {
+	"type": "textbox",
+	"value": "The available parameters for [{1} help function] are add, buy, delete, info, list, log, edit, and toggle",
+	"label": "General",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageBuy": {
+	"type": "textbox",
+	"value": "{0} -> Use [{1} buy #] to purchase an item. If the item has the 'contribute' type, you can put an amount to pay after specifying the item number",
+	"label": "Buying an item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageInfo": {
+	"type": "textbox",
+	"value": "{0} -> Use [{1} info #] to get a detailed information message about item #!",
+	"label": "Info Function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageList": {
+	"type": "textbox",
+	"value": "Use [{1} list page] to see a collection of items at once, with their name, item number, and cost",
+	"label": "List Function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageAdd": {
+	"type": "textbox",
+	"value": "[{1} add <ItemType> cost/default/dflt ItemName]. Add an item for viewers to purchase with {2}! You can also use [{1} toggle] to enable/disable an existing item in the store. Use {0} help add [general/once/code/contribute/unique] for more information.",
+	"label": "Adding an item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageAddGeneral": {
+	"type": "textbox",
+	"value": "[{1} add general cost/default ItemName] Use this function to add items that can be bought multiple times",
+	"label": "Adding a general type item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageAddContribute": {
+	"type": "textbox",
+	"value": "[{1} add contribute cost/default ItemName] Use this function to add items that can everyone can work together to purchase. Can also use 'ctb' as a short form for contribute",
+	"label": "Adding a 'contribute' type item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageAddUnique": {
+	"type": "textbox",
+	"value": "[{1} add unique cost/default ItemName] Use this function to add items that can only be purchased once per user.",
+	"label": "Adding a 'unique' type item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageOnce": {
+	"type": "textbox",
+	"value": "[{1} add once cost/default ItemName] Use this function to add items that can only be purchased once",
+	"label": "Adding a 'once' type item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageAddCode": {
+	"type": "textbox",
+	"value": "[{1} add code <cost/default> <ItemCode> <ItemName>] use this function to add items that contain a code, so the bot can send a whisper containing the code. Code items can only be purchased once",
+	"label": "General",
+	"tooltip": "Adding a 'code' type item",
+	"group": "Help Messages"
+	},
+	"helpmessageAddCode2": {
+	"type": "textbox",
+	"value": "Make sure there are no spaces in the ItemCode, or it won't save properly!",
+	"label": "Adding a 'code' type item. Item code warning",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageLog": {
+	"type": "textbox",
+	"value": "When you use [{1} log #], it will load the last # entries, and post them in chat. If no number is given, it will load the last 10 entries. If # is higher than the amount of entries, the bot will load as many as it can before returning an error message.",
+	"label": "Log function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageToggle": {
+	"type": "textbox",
+	"value": "Use [{1} toggle #] to enable or disable the purchase of an existing item! Useful if you have a once-off item that you want to make available, or you don't want a general item to be purchased for whatever reason",
+	"label": "Toggle function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageEdit": {
+	"type": "textbox",
+	"value": "[{1} edit <itemID> <DataType> <#>]. <DataType> can be an item's name, cost, permission, cooldown, or code",
+	"label": "Edit function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageDelete": {
+	"type": "textbox",
+	"value": "Use [{1} delete #] to completely remove an item from the system, and allow another item to take its item ID. Once deleted, it can't be undone, so use with caution!",
+	"label": "Delete function",
+	"tooltip": "",
+	"group": "Help Messages"
 	},
 	"openfolder": {
 	"type": "button",

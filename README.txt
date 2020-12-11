@@ -5,10 +5,14 @@
 Description: Allow your viewers to spend points to buy items or perks that you create! 
 Made By: Xailran
 Website: https://www.twitch.tv/xailran
+	 https://www.twitter.com/xailran
 
 #############################
 #         Versions          #
 #############################
+
+2.0.0 - Added list function. "Help" messages are now customizable. Added VIP permission types. Major code re-work
+
 1.5.1 - (Public Build 3.1) Turns out removing the Dev Mode option broke things. Things aren't broken anymore.
 1.5.0 - (Public Build 3) Added "edit" function. Added "unique" item type. Added Discord functionality. PermissionInfo settings are actually followed now
 1.4.1 - Changed !store info failed responses to follow whisper setting
@@ -25,10 +29,13 @@ Website: https://www.twitch.tv/xailran
 1.0.0 - Initial Release
 
 Bug fixes since last update:
-Permission Info now fully functions. 
+Log reads entries in the correct order now.
+User cooldown now saves specific to each item. REQUIRES BUG TESTING
+PermissionInfo settings now save properly across all functions. REQUIRES BUG TESTING
 
 Known bugs/issues:
 None
+
 #####################
 #       Usage       #
 #####################
@@ -55,19 +62,21 @@ Deletes an item permanently, allowing its item ID to be used by the next new ite
 WARNING: Once you delete an item, there is no going back! Make sure you are absolutely sure before using this command!!
 
 	ALL VIEWERS
-!store buy <#> (CTBvalue)
-Purchase item # in the store. 
-NEW - If the item is of the "contribute" item type, they need to specify how much they are contributing as their (CTBvalue). If the user has enough to pay off the full amount however, they don't need to include a (CTBvalue)
+!store
+Shows how many items are currently in the store, and points to !store info and buy
+
+!store list <page>
+Lists a collection of items together, organised by item number. Shows in the format ItemName(item number, item cost).
 
 !store info <#>
 Outputs ItemName, ItemType, and cost of the chosen id
 
-!store
-Shows how many items are currently in the store, and points to !store info and buy
+!store buy <#> (CTBvalue)
+Purchase item # in the store. 
+If the item is of the "contribute" item type, they need to specify how much they are contributing as their (CTBvalue). If the user has enough to pay off the full amount however, they don't need to include a (CTBvalue)
 
 !store help <function> <function2>
-
-<function> = add, delete, edit, log, toggle, buy, info
+<function> = add, delete, edit, list, log, toggle, buy, info
 For <function> = add; <function2> = general, once, code, contribute/ctb, unique
 
 ###########################
@@ -115,6 +124,12 @@ Once-off items and general items put together! Unique items can be purchased an 
 
 WARNING: If users change their name, they will be able to buy the unique item again
 
+
+########################
+#   Inventory System   #     NEW!!
+########################
+
+
 ####################
 #  Future Updates  #
 ####################
@@ -125,17 +140,18 @@ These are not in any particular order, just things I would like to add someday. 
 	- Random discounts applied via command, work similarly to flash sales?
 - Add categories, or a way to display item types differently
 - Make more messages customizable
-- If enough people want it, I can add a toggle for "only when live" for each non-mod function (buy, help, info), rather than just the one toggle. The UI is already quite large, hence why I haven't added it already.
 - Add overlay functionality
-- Add sound functionality
+- Add option to choose price ranges for different sounds.
 - Show top/all contributors to buying a "contribution" type item upon purchase of said item.
 - Inventory System
 - Add "Reset" function, to allow unique items to be purchased by those whom have already purchases that item once, or to restore contribute type items to their original price
 
-2.0.0 update will be when data switches from being stored in a txt to a JSON
-- Add [!store convert <#>] command, so that all data can be transferred across without any loss
-
-
+#############################################
+#   Donations are never expected, but any   #
+#    support definitely helps, and keeps    #
+#     me able to make more free scripts!    #
+#       https://streamlabs.com/xailran      # 
+#############################################
 #############################################
 # Tag me in the Streamlabs Chatbot discord  #
 #    if you have any questions or ideas!    #
