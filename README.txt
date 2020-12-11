@@ -11,8 +11,7 @@ Website: https://www.twitch.tv/xailran
 #         Versions          #
 #############################
 
-2.0.0 - Added list and sound functionality, and new item types. "Help" messages are now customizable. Major code re-work 
-(Inventory systems funded by Andrew [TLUN])
+2.0.0 - Added list function, "session" item type, and sound functionality. "Help" messages are now customizable. Major code re-work
 
 1.5.2 - Updated permission types
 1.5.1 - (Public Build 3.1) Turns out removing the Dev Mode option broke things. Things aren't broken anymore.
@@ -31,7 +30,7 @@ Website: https://www.twitch.tv/xailran
 1.0.0 - Initial Release
 
 Bug fixes since last update:
-None
+Store list will now correctly list items, even with missing item IDs
 
 Known bugs/issues:
 None
@@ -56,11 +55,6 @@ Default <#> is 10
 Disables or enables an item, depending on its current setting.
 WARNING: Items with codes are automatically disabled on purchase. Enabling them again could result in giving away a dodgy code!
 
-!store inventory reset <User Name>
-Removes all items from <User Name>. If no name is given, the full system inventory is wiped. If wiping full inventory system, a backup file is saved.
-Only one of these files is saved though, so using the command again will erase it.
-WARNING: While an emergency list of an individual user's items is sent to the script logs, these are only temporary! This command cannot be undone!
-
 	STREAMER ONLY
 !store delete <#>
 Deletes an item permanently, allowing its item ID to be used by the next new item. The command needs to be entered twice as a safeguard, in case a mistake is made.
@@ -83,9 +77,6 @@ If the item is of the "contribute" item type, they need to specify how much they
 !store help <function> <function2>
 <function> = add, delete, edit, list, log, toggle, buy, info
 For <function> = add; <function2> = general, once, code, contribute/ctb, unique, session
-
-!store inventory
-Sends a message containing all the items the user has in their inventory
 
 ###########################
 #   Adding General Items  #
@@ -139,24 +130,24 @@ Session items are almost the same as Once-Off items, except they automatically t
 
 !store add session <cost/default> <ItemName>
 
-#######################
-#   Inventory Items   #     NEW!!
-#######################
-These items aren't intended to have any tangible reward. Rather, they function as "trophies", that users can purchase to show off (using the "!store inventory" command).
-Otherwise, these items function as once-off items, and thus need to be created and/or repeatedly enabled per time you wish for the item to be bought.
+########################
+#   Inventory System   #     NEW!!
+########################
 
-!store add inventory <cost/default> <ItemName>
-OR
-!store add inv <cost/default> <ItemName>
 
 ####################
 #  Future Updates  #
 ####################
 These are not in any particular order, just things I would like to add someday. If you really want to see a particular update, let me know! 
 
+- Add discounts
+	- Flash sales, pick an item from an approved list, and apply a random discount (75%, 50%, 25%, 10%, 5%) for x minutes.
+	- Random discounts applied via command, work similarly to flash sales?
+- Add categories, or a way to display item types differently
 - Make more messages customizable (ongoing)
 - Add overlay functionality
 - Show top/all contributors to buying a "contribution" type item upon purchase of said item.
+- Inventory System
 - Add "Reset" function, to allow unique items to be purchased by those whom have already purchases that item once, to restore contribute type items to their original price, or re-enable session type items
 - Add "Organize" function, to fix item IDs, and fix any gaps
 
