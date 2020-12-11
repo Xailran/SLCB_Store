@@ -9,10 +9,11 @@ Website: https://www.twitch.tv/xailran
 #############################
 #         Versions          #
 #############################
+1.3.0 - (Public Build 2) - Added [!store delete] function. Altered file saving system so that the delete function could be added, and for a bug fix. Rather than just increasing the item ID by 1 for every new item, the script will search for the lowest positive integer that it can set the item ID to.
 1.2.0 - Added Mixer and YouTube functionality
 1.1.2 - Commands can now be sent as whispers. Added toggle for allowing items to be bought through whispers.
 1.1.1 - Fixed user cooldowns to actually be used!
-1.1.0 - Added !store toggle and !store help functions
+1.1.0 - Added [!store toggle] and [!store help] functions
 1.0.2.1 - (Public Build 1) - Minor text changes
 1.0.2 - Fixed store log to actually use permissions.
 1.0.1 - Minor bug fixes and text changes
@@ -34,6 +35,11 @@ Default <#> is 10
 Disables or enables an item, depending on its current setting.
 WARNING: Items with codes are automatically disabled on purchase. Enabling them again could result in giving away a dodgy code!
 
+	STREAMER ONLY
+!store delete <#>
+Deletes an item permanently, allowing its item ID to be used by the next new item. The command needs to be entered twice as a safeguard, in case a mistake is made.
+WARNING: Once you delete an item, there is no going back! Make sure you are absolutely sure before using this command!!
+
 	ALL VIEWERS
 !store buy <#>
 Purchase item # in the store
@@ -46,7 +52,7 @@ Shows how many items are currently in the store, and points to !store info and b
 
 !store help <function>
 
-<function> = add, log, toggle, buy, info
+<function> = add, delete, log, toggle, buy, info
 
 ###########################
 #   Adding General Items  #

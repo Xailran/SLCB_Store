@@ -193,6 +193,9 @@ def Execute(data):
 			command = MySet.command.lower() + "log"
 			if not HasPermission(data, MySet.StoreLogPermission, MySet.StoreLogPermissionInfo):
 				return
+			elif not MySet.stf:
+				message = "The streamer currently has the store log disabled"
+				SendResp(data, message)
 			elif IsOnCooldown(data, command):
 				StoreLog(data)
 		
@@ -240,6 +243,12 @@ def Execute(data):
 		elif (data.GetParam(1).lower() == "delete"):
 			if not HasPermission(data, MySet.StoreDelPermission, MySet.StoreDelPermissionInfo):
 				return
+			elif not MySet.StoreDelEnable:
+				message = "The delete function must be enabled before it can be used, due to the nature of what it does"
+				SendResp(data, message)
+			elif (data.GetParam(2) == ""):
+				message = "{0} -> [{1} delete #] is the required command format, where # is the item ID for an item you wish to delete".format(data.UserName,MySet.command)
+				SendResp(data, message)
 			else:
 				ItemID = data.GetParam(2)
 				StoreDelete(data, ItemID)
@@ -321,7 +330,7 @@ def PurchaseSuccess(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, 
 	SendResp(data, message)
 	Points = int(Points) - int(ItemCost)
 	message = "Thanks for buying {0}. You now have {1} {2} remaining".format(ItemName, Points, Currency)
-	if not data.IsFromYouTube:
+	if not data.IsFromYoutube():
 		Parent.SendStreamWhisper(data.UserName, message)
 	if (ItemType.lower() == "once") or (ItemType.lower() == "code"):
 		ItemDisable(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode)
@@ -415,7 +424,15 @@ def StoreAdd(data, ItemType):
 		SendResp(data, message)
 		return
 	Path = os.path.join(os.path.dirname(__file__), "Items")
-	ItemID = str(len([name for name in os.listdir(Path) if os.path.isfile(os.path.join(Path, name))]) + 1)
+	ItemID = 1
+	ItemsPath = os.path.join(os.path.dirname(__file__), "Items\\{0}.txt".format(ItemID))
+	ItemLimit = int(len([name for name in os.listdir(Path) if os.path.isfile(os.path.join(Path, name))]) + 1)
+	for ItemID in range (1, ItemLimit):
+		ItemsPath = os.path.join(os.path.dirname(__file__), "Items\\{0}.txt".format(ItemID))
+		if os.path.exists(ItemsPath):
+			ItemID = ItemID + 1
+		else:
+			break
 	SaveItemPath = os.path.join(os.path.dirname(__file__), "Items\\{0}.txt".format(ItemID))
 	with codecs.open(SaveItemPath, "w", "utf-8") as fCI:
 		CI = "Enabled" + "\r\n" + ItemName + "\r\n" + ItemType + "\r\n" + ItemPermission + "\r\n" + str(ItemCost) + "\r\n" + str(ItemCooldown) + "\r\n" + str(ItemCode)
@@ -476,6 +493,9 @@ def StoreDelete(data, ItemID):
 				os.remove(ItemsPath)
 				message = MySet.StoreDelMsg.format(ItemID,data.UserName)
 				SendResp(data, message)
+				with codecs.open(DelConfFile, "w", "utf-8") as fCD:
+					CD = "Reset"
+					fCD.write(CD)
 			else:
 				message = MySet.notavailable.format(data.UserName, ItemID)
 				SendResp(data, message)
@@ -512,8 +532,10 @@ def StoreHelp(data, command):
 		message = "When you use {0} log #, it will load the last # entries, and post them in chat. If no number is given, it will load the last 10 entries. If # is higher than the amount of entries, the bot will load as many as it can before returning an error message.".format(MySet.command)
 	elif (data.GetParam(2) == "toggle"):
 		message = "Use [{0} toggle #] to enable or disable the purchase of an existing item! Useful if you have a once-off item that you want to make available, or you don't want a general item to be purchased for whatever reason".format(MySet.command)
+	elif (data.GetParam(2) == "delete"):
+		message = "Use {{0} delete #] to completely remove an item from the system, and allow another item to take its item ID. Once deleted, it can't be undone, so use with caution!".format(MySet.command)
 	else:
-		message = "The available parameters for [{0} help <function>] are add, buy, info, log, and toggle".format(MySet.command)
+		message = "The available parameters for [{0} help <function>] are add, buy, delete, info, log, and toggle".format(MySet.command)
 	if MySet.HelpCooldown:
 		Parent.AddCooldown(ScriptName,command,MySet.timerCooldown)
 		Parent.AddUserCooldown(ScriptName,command,data.User,MySet.timerUserCooldown)
@@ -553,6 +575,7 @@ class Settings:
 			self.atsdefaultcost = 5000
 			self.StoreAddPermission = "Editor"
 			self.StoreAddPermissionInfo = ""
+			self.StoreDelEnable = False
 			self.StoreDelPermission = "Caster"
 			self.StoreDelPermissionInfo = ""
 			self.stf = True
