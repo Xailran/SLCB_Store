@@ -3,6 +3,18 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Script specific
+Items/
+items/
+settings.js
+settings.json
+inventory.json
+Log.txt
+log.txt
+
+# IDE related
+.idea/
+
 # C extensions
 *.so
 
