@@ -68,7 +68,14 @@
 	"type": "checkbox",
 	"value": true,
 	"label": "Use cooldown message",
-	"tooltip": "To display cooldown message?",
+	"tooltip": "Check this box to display cooldown messages",
+	"group": "Cooldown"
+	},
+	"HelpCooldown": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Use a cooldown with the !store help function",
+	"tooltip": "Check this box if you want to the !store help function to follow the cooldown settings",
 	"group": "Cooldown"
 	},
 	"timerCooldown": {
@@ -113,13 +120,6 @@
 	"tooltip": "This value will be used for items created in chat with default cost selected",
 	"group": "Store Settings"
 	},
-	"stf": {
-	"type": "checkbox",
-	"value": true,
-	"label": "Enable store log",
-	"tooltip": "If enabled all purchases will be saved to the log!",
-	"group": "Store Settings"
-	},
 	"StoreAddPermission": {
 	"type": "dropdown",
 	"value": "Editor",
@@ -133,6 +133,35 @@
 	"value": "",
 	"label": "Store add permission level info",
 	"tooltip": "Set a minimum rank, points, hours, or specific user here",
+	"group": "Store Settings"
+	},
+	"StoreDelEnable": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Enable !store delete function.",
+	"tooltip": "DELETING CANNOT BE UNDONE. TAKE EXTREME CAUTION USING THIS FUNCTION\r\nOnly tick this box if you understand the risks associated with it!",
+	"group": "Store Settings"
+	},
+	"StoreDelPermission": {
+	"type": "dropdown",
+	"value": "Caster",
+	"items": ["Everyone","Regular","Subscriber","GameWisp Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"label": "Store delete permission level info",
+	"tooltip": "Set a minimum permission level required to permanently delete items from the store.\r\nDELETING CANNOT BE UNDONE. TAKE EXTREME CAUTION USING THIS FUNCTION",
+	"group": "Store Settings"
+	},
+	"StoreDelPermissionInfo": {
+	"type": "textbox",
+	"value": "",
+	"label": "Store delete permission level info",
+	"tooltip": "Set a minimum rank, points, hours, or specific user here\r\nDELETING CANNOT BE UNDONE. TAKE EXTREME CAUTION USING THIS FUNCTION",
+	"group": "Store Settings"
+	},
+	"stf": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Enable store log",
+	"tooltip": "If enabled all purchases will be saved to the log!",
 	"group": "Store Settings"
 	},
 	"StoreLogPermission": {
@@ -167,72 +196,79 @@
 	"info": {
 	"type": "textbox",
 	"value": "{0} -> Use [{1} info <#>] to learn about an item, or [{1} buy <#>] to buy an item!",
-	"label": "Need info response",
+	"label": "Need more info",
 	"tooltip": "Response when user doesn't specify what item to buy \r\n{0} = user ",
 	"group": "Response Messages"
 	}, 
 	"itempurchasesuccess": {
 	"type": "textbox",
 	"value": "{0} successfully purchased {1} for {2} {3}!",
-	"label": "Item purchase success response",
+	"label": "Item purchase success",
 	"tooltip": "Response when a user successfully buys an item! \r\n{0} = user \r\n{1} = Item Name \r\n{2} = Item Cost \r\n{3} = Points name",
 	"group": "Response Messages"
 	},
 	"notenough": {
 	"type": "textbox",
 	"value": "{0} -> you don't have the {1} {2} required to buy this item.",
-	"label": "Not enough points response",
+	"label": "Not enough points",
 	"tooltip": "Response when user doesn't have enough currency. \r\n{0} = user \r\n{1} = purchase cost\r\n{2} = currencyname\r\n{3} = user points",
 	"group": "Response Messages"
 	},
 	"notavailable": {
 	"type": "textbox",
 	"value": "{0} -> {1} isn't an available item.",
-	"label": "Item not available response",
+	"label": "Item doesn't exist",
 	"tooltip": "Response when user tries to buy an item that isn't available \r\n{0} = user \r\n{1} = item user tried to buy\r\n",
 	"group": "Response Messages"
 	},
 	"notenabled": {
 	"type": "textbox",
 	"value": "{0} -> item {1} is currently disabled",
-	"label": "Item disabled response",
+	"label": "Item disabled",
 	"tooltip": "Response when user tries to buy an item that is disabled \r\n{0} = user \r\n{1} = item user tried to buy\r\n",
 	"group": "Response Messages"
 	},
 	"notperm": {
 	"type": "textbox",
 	"value": "{0} -> you don't have permission to use this command. permission is: [{1} / {2}]",
-	"label": "Not permitted response",
+	"label": "Not permitted",
 	"tooltip": "message to send when the user permission doesn't match command permission \r\n{0} = user \r\n{1} = permission\r\n{2} = Info",
 	"group": "Response Messages"
 	},
 	"listbase": {
 	"type": "textbox",
-	"value": "There are currently {0} items available to be purchased. Use [{1} info <#>] to learn about an item, or [{1} buy <#>] to buy an item",
-	"label": "Store count response",
+	"value": "There are currently {0} items in the store. Use [{1} info <#>] to learn about an item, or [{1} buy <#>] to buy an item",
+	"label": "!store message",
 	"tooltip": "The message shown before listing the items when using !store, without any parameters \r\n{0} = user\r\n{1} = command name",
 	"group": "Response Messages"
 	},
 	"atssuccess": {
 	"type": "textbox",
 	"value": "{1} has successfully been added by {0}!",
-	"label": "Add to store success message",
+	"label": "Add to store successful",
 	"tooltip": "Message sent to chat when '!store add' has succeeded \r\n{0} = user \r\n{1} = Item Name",
 	"group": "Response Messages"
 	},
 	"atsfailed": {
 	"type": "textbox",
 	"value": "Command failed. Command format: !store add <ItemType> <cost/default> <ItemName>",
-	"label": "Add to store failed message",
+	"label": "Add to store failed",
 	"tooltip": "Message sent to chat when '!store add' has failed",
 	"group": "Response Messages"
 	},
 	"storeinfosuccess": {
 	"type": "textbox",
 	"value": "{0} -> {1} ({2}) is available for {4} {5}",
-	"label": "Store info success response",
+	"label": "Store info success",
 	"tooltip": "Response with item information chosen by user \r\n{0} = User \r\n{1} = Item Name \r\n{2} = Item Type \r\n{3} = Item ID \r\n{4} = Item Cost \r\n{5} = Points Name",
 	"group": "Response Messages"
+	},
+	"StoreDelMsg": {
+	"type": "textbox",
+	"value": "Item {0} has been successfully deleted by {1}",
+	"label": "Store delete success",
+	"tooltip": "Response to confirm that an item has been deleted permanently\r\n{0} = ItemID\r\n{1} = user",
+	"group": ""
 	},
 	"openfolder": {
 	"type": "button",

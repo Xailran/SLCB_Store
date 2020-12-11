@@ -9,10 +9,11 @@ Website: https://www.twitch.tv/xailran
 #############################
 #         Versions          #
 #############################
+1.2.0 - Added Mixer and YouTube functionality
 1.1.2 - Commands can now be sent as whispers. Added toggle for allowing items to be bought through whispers.
 1.1.1 - Fixed user cooldowns to actually be used!
 1.1.0 - Added !store toggle and !store help functions
-1.0.2.1 - Minor text changes
+1.0.2.1 - (Public Build 1) - Minor text changes
 1.0.2 - Fixed store log to actually use permissions.
 1.0.1 - Minor bug fixes and text changes
 1.0.0 - Initial Release
@@ -59,16 +60,25 @@ Can be purchased multiple times, ideal for things such as instagram follows, pus
 ###############################
 Used for items containing sensitive information like codes, will whisper the user the code so it doesn't get snatched up in chat!
 
-!store add steam <cost/default> <code> <Item Name>
+!store add code <cost/default> <code> <Item Name>
 The <code> must not have any spaces in it, or part of the code will be shown in the item name!!
 
-############################
-#   Other Once-Off Items   #
-############################
+Note: This part of the script is removed for YouTube streams, as there is no whisper function to handle sensitive information like codes. A work-around is to use the once-off function for items with codes, and contact the people who purchased those items yourself, in a manner that suits you.
+
+######################
+#   Once-Off Items   #
+######################
 Used for items that can only be bought once before being disabled. Ideal for items that are extremely rare.
 In a future update, editors (depending on your permission settings) will be able to re-enable these items, to be bought again.
 
 !store add once <cost/default> <ItemName>
+
+####################
+#   Unique Items   #   COMING SOON
+####################
+Once-off items and general items put together! Unique items can be purchased an unlimited number of times, but only once per user. Useful for things such as twitter or instagram follows.
+
+!store add unique <cost/default> <ItemName>
 
 ####################
 #  Future Updates  #
