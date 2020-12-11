@@ -11,6 +11,7 @@ Website: https://www.twitch.tv/xailran
 #         Versions          #
 #############################
 
+2.0.2 - Deprecated once-off items with the addition of quantities. Revised inventory items to be alike to uniques.
 2.0.1 - Changed list messages to be customizable. Added quantities that can be added to items
 2.0.0 - Added list and sound functionality, and new item types. "Help" messages are now customizable. Major code re-work 
 (Inventory systems funded by Andrew [TLUN])
@@ -156,6 +157,7 @@ OR
 These are not in any particular order, just things I would like to add someday. If you really want to see a particular update, let me know! 
 
 - Make more messages customizable (ongoing)
+- Switch codes from once-off design to single quantity items.
 - Add overlay functionality
 - Show top/all contributors to buying a "contribution" type item upon purchase of said item.
 - Add "Reset" function, to allow unique items to be purchased by those whom have already purchases that item once, to restore contribute type items to their original price, or re-enable session type items

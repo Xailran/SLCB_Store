@@ -17,13 +17,14 @@ import winsound
 ScriptName = "Store"
 Website = "https://www.xailran.com/"
 Creator = "Xailran"
-Version = "2.0.1"
+Version = "2.0.2"
 Description = "Allow your viewers to spend points to buy items or perks that you create; now with inventory"
 
 # ---------------------------------------
 # Versions
 # ---------------------------------------
 """
+2.0.2 - Deprecated once-off items with the addition of quantities. Revised inventory items to be alike to uniques.
 2.0.1 - Changed list messages to be customizable. Added quantities that can be added to items
 2.0.0 - Added list and sound functionality, and new item types. "Help" messages are now customizable. Major code re-work
 1.5.2 - Updated permission types
@@ -640,10 +641,10 @@ def PurchaseSuccess(data, item):
         item.quantity -= 1
 
     # Special saving conditions
-    if item.type == ItemType.unique:
+    if item.type in [ItemType.unique, ItemType.inventory]:
         item.code = item.code + data.User + "%#%"
 
-    if item.type in [ItemType.once, ItemType.code, ItemType.contribute, ItemType.session, ItemType.inventory]:
+    if item.type in [ItemType.once, ItemType.code, ItemType.contribute, ItemType.session]:
         item.setting = "Disabled"
         if item.type == ItemType.session:
             global sessionItems
@@ -656,7 +657,7 @@ def PurchaseSuccess(data, item):
         if os.path.exists(items_path):
             os.remove(items_path)
         else:
-            Parent.Log(ScriptName, "Something went wrong! Please send Xailran a screenshot of this in discord,"
+            Parent.Log(ScriptName, "Something went wrong! Please send Xailran a screenshot of this in Discord, "
                                    "and give as much information as you can about what happened beforehand")
     else:
         item.Save()
