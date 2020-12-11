@@ -1,0 +1,570 @@
+{
+	"output_file": "settings.json",
+	"onlylive": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Only when live (ALL FUNCTIONS)",
+	"tooltip": "Command is only active when stream is live.",
+	"group": "General"
+	},
+	"command": {
+	"type": "textbox",
+	"value": "!store",
+	"label": "Command name",
+	"tooltip": "The command the bot will respond to",
+	"group": "General"
+	},
+	"EnabledDiscord": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Let !store commands be used in Discord",
+	"tooltip": "If checked, users will be able to use the !store in discord. Whisper settings will still be followed.",
+	"group": "General"
+	},
+	"StoreInfoWhisp": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Send !store info response as a whisper",
+	"tooltip": "If checked, !store info responses will be sent in a whisper, rather than in chat",
+	"group": "General"
+	},
+	"StoreHelpWhisp": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Send !store help response as a whisper",
+	"tooltip": "If checked, !store help responses will be sent in a whisper, rather than in chat",
+	"group": "General"
+	},
+	"Permission": {
+	"type": "dropdown",
+	"value": "Everyone",
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"label": "Permission level",
+	"tooltip": "Set a minimum permission level required to use the store!",
+	"group": "General"
+	},
+	"PermissionInfo": {
+	"type": "textbox",
+	"value": "",
+	"label": "Permission level info",
+	"tooltip": "Set a minimum rank, points, hours, or specific user here",
+	"group": "General"
+	},
+	"togCooldown": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Cooldown on/off",
+	"tooltip": "Enable/Disable cooldown.",
+	"group": "Cooldown"
+	},
+	"castercd": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Caster ignores cooldown",
+	"tooltip": "If checked the broadcaster ignore cooldowns!",
+	"group": "Cooldown"
+	},
+	"usecd": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Use cooldown message",
+	"tooltip": "Check this box to display cooldown messages",
+	"group": "Cooldown"
+	},
+	"HelpCooldown": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Use a cooldown with the !store help function",
+	"tooltip": "Check this box if you want to the !store help function to follow the cooldown settings",
+	"group": "Cooldown"
+	},
+	"timerCooldown": {
+	"type": "numberbox",
+	"label": "Cooldown (seconds)",
+	"value": 2,
+	"tooltip": "Cooldown timer in seconds.",
+	"group": "Cooldown"
+	},
+	"oncooldown": {
+	"type": "textbox",
+	"value": "{0} the command is still on cooldown for {1} seconds!",
+	"label": "Cooldown response",
+	"tooltip": "The message that the bot will display when the command is on cooldown. \r\n {0} = user \r\n {1} = time remaining",
+	"group": "Cooldown"
+	},
+	"timerUserCooldown": {
+	"type": "numberbox",
+	"label": "User cooldown (seconds)",
+	"value": 10,
+	"tooltip": "User Cooldown timer in seconds.\r\nNot yet functional for !store buy",
+	"group": "Cooldown"
+	},
+	"onusercooldown": {
+	"type": "textbox",
+	"value": "{0} the command is still on user cooldown for {1} seconds!",
+	"label": "User cooldown response",
+	"tooltip": "The message that the bot will display when the command is on user cooldown. \r\n {0} = user \r\n {1} = time remaining",
+	"group": "Cooldown"
+	},
+	"purchaseallow": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Enable store purchases",
+	"tooltip": "Useful for allowing setup without allowing viewers to buy from the store",
+	"group": "Store Settings"
+	},
+	"StoreBuyWhisp": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Allow items to be bought via whisper",
+	"tooltip": "If ticked, viewers will be able to send a whisper to the bot to buy items. Announcements of successful purchase will also be sent as a whisper",
+	"group": "General"
+	},
+	"atsdefaultcost": {
+	"type": "numberbox",
+	"value": 5000,
+	"label": "Default item cost",
+	"tooltip": "This value will be used for items created in chat with default cost selected",
+	"group": "Store Settings"
+	},
+	"StoreAddPermission": {
+	"type": "dropdown",
+	"value": "Editor",
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"label": "Store add/edit permission level",
+	"tooltip": "Set a minimum permission level required to add items to the store. The edit function follows this setting as well",
+	"group": "Store Settings"
+	},
+	"StoreAddPermissionInfo": {
+	"type": "textbox",
+	"value": "",
+	"label": "Store add/edit permission level info",
+	"tooltip": "Set a minimum rank, points, hours, or specific user here",
+	"group": "Store Settings"
+	},
+	"DeleteOnRedeemCode": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Auto delete code type items",
+	"tooltip": "Code type items will be automatically deleted when purchased.\r\nDELETING ITEMS CANNOT BE UNDONE",
+	"group": "Store Settings"
+	},
+	"StoreDelEnable": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Enable !store delete function.",
+	"tooltip": "DELETING CANNOT BE UNDONE. TAKE EXTREME CAUTION USING THIS FUNCTION\r\nOnly tick this box if you understand the risks associated with it!",
+	"group": "Store Settings"
+	},
+	"StoreDelPermission": {
+	"type": "dropdown",
+	"value": "Caster",
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"label": "Store delete permission level info",
+	"tooltip": "Set a minimum permission level required to permanently delete items from the store.\r\nDELETING CANNOT BE UNDONE. TAKE EXTREME CAUTION USING THIS FUNCTION",
+	"group": "Store Settings"
+	},
+	"StoreDelPermissionInfo": {
+	"type": "textbox",
+	"value": "",
+	"label": "Store delete permission level info",
+	"tooltip": "Set a minimum rank, points, hours, or specific user here\r\nDELETING CANNOT BE UNDONE. TAKE EXTREME CAUTION USING THIS FUNCTION",
+	"group": "Store Settings"
+	},
+	"stf": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Enable store log",
+	"tooltip": "If enabled all purchases will be saved to the log!",
+	"group": "Store Settings"
+	},
+	"StoreLogPermission": {
+	"type": "dropdown",
+	"value": "Editor",
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"label": "Store log permission level",
+	"tooltip": "Set a minimum permission level required to access the store log",
+	"group": "Store Settings"
+	},
+	"StoreLogPermissionInfo": {
+	"type": "textbox",
+	"value": "",
+	"label": "Store log permission level info",
+	"tooltip": "Set a minimum rank, points, hours, or specific user here",
+	"group": "Store Settings"
+	},
+	"textline": {
+	"type": "textbox",
+	"value": "{4}: {0} - {1} - {2} {3}",
+	"label": "Store log format",
+	"tooltip": "Format of lines saved to the textfile upon successful purchase. \r\n{0} = user \r\n{1} = Item name\r\n{2} = Item cost\r\n{3} = currencyname\r\n{4} = Date & Time\r\n",
+	"group": "Store Settings"
+	},
+	"InvPermission": {
+	"type": "dropdown",
+	"value": "Editor",
+	"items": ["Everyone","Follower","Regular","VIP Exclusive","VIP+","Subscriber","Moderator","Editor","Caster","Min_Rank","Min_Points","Min_Hours","user_Specific"],
+	"label": "Inventory reset permission level",
+	"tooltip": "Set a minimum permission level required to reset inventory for a player or the full system",
+	"group": "Store Settings"
+	},
+	"InvPermissionInfo": {
+	"type": "textbox",
+	"value": "",
+	"label": "Store log permission level info",
+	"tooltip": "Set a minimum rank, points, hours, or specific user here",
+	"group": "Store Settings"
+	},
+	"StoreListEnable": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Enable Store List",
+	"tooltip": "Users will be able to use the list function to view a range of items simultaneously",
+	"group": "Store List"
+	},
+	"StoreListWhisp": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Send !store list response as a whisper",
+	"tooltip": "If checked, !store list responses will be sent in a whisper, rather than in chat",
+	"group": "Store List"
+	},
+	"StoreListNumber": {
+	"type": "numberbox",
+	"value": 10,
+	"label": "Items per page",
+	"tooltip": "Sets amount of items shown per page of the list",
+	"group": "Store List"
+	},
+	"StoreListShowDisabled": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Show disabled items in the list",
+	"tooltip": "If enabled, items that are disabled will be shown in the list.",
+	"group": "Store List"
+	},
+	"StoreListShowAll": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Show all items in one page",
+	"tooltip": "If enabled, the '!store list all' command will become available, and it will show all items as one page",
+	"group": "Store List"
+	},
+	"SLSAusage": {
+	"type": "dropdown",
+	"value": "Stream Chat",
+	"items": ["Stream Chat","Stream Whisper","Stream Both","Discord Chat","Discord Whisper","Discord Both","Chat Both","Whisper Both","All"],
+	"label": "Usage for !store list all",
+	"tooltip": "Set where the command can be used for listing all items",
+	"group": "Store List"
+	},
+	"StoreListMessage": {
+	"type": "textbox",
+	"value": "Format = Item Name (itemID, item cost). {0}. Page {1}/{2}",
+	"label": "List response",
+	"tooltip": "The response with the list.\r\n{0} = list of items\r\n{1} = current page\r\n{2} = maximum page count",
+	"group": "Store List"
+	},
+	"StoreListFormat": {
+	"type": "textbox",
+	"value": "{0} ({1}, {2}). ",
+	"label": "List format",
+	"tooltip": "The format of each item in the list.\r\n{0} = item name\r\n{1} = item ID\r\n{2} = item cost\r\n{3} = item type\r\n{4} = item setting (enabled or disabled)",
+	"group": "Store List"
+	},
+	"enableSounds": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Enable sounds",
+	"tooltip": "If enabled, sounds will play on successful purchase of an item. If a sound has been assigned to an item, it will overwrite all UI settings",
+	"group": "Sounds"
+	},
+	"randomSounds": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Play random sounds",
+	"tooltip": "If enabled, a sound will be randomly chosen from the sounds folder to be played",
+	"group": "Sounds"
+	},
+	"soundFile": {
+	"type": "textbox",
+	"value": "name.mp3",
+	"label": "Sound File",
+	"tooltip": "Sound must be stored in the sounds folder to successfully play.\r\nMust be a .mp3 file\r\nThis sound will be played if no sound is assigned to the item being purchased",
+	"group": "Sounds"
+	},
+	"volume": {
+	"type": "slider",
+	"label": "volume",
+	"value": 50,
+	"min": 1,
+	"max": 100,
+	"ticks": 1,
+	"tooltip": "Sets volume for sfx to be played at",
+	"group": "Sounds"
+	},
+	"respNotLive": {
+	"type": "textbox",
+	"value": "Sorry {0}, but the stream must be live in order to use that command.",
+	"label": "Stream not live",
+	"tooltip": "Message that will display if user attempts to use the command while stream is not live. \r\n {0} = User",
+	"group": "Response Messages"
+	},
+	"info": {
+	"type": "textbox",
+	"value": "{0} -> Use [{1} info <#>] to learn about an item, or [{1} buy <#>] to buy an item!",
+	"label": "Need more info",
+	"tooltip": "Response when user doesn't specify what item to buy \r\n{0} = user ",
+	"group": "Response Messages"
+	},
+	"itempurchasesuccess": {
+	"type": "textbox",
+	"value": "{0} successfully purchased {1} for {2} {3}!",
+	"label": "Item purchase success",
+	"tooltip": "Response when a user successfully buys an item! \r\n{0} = user \r\n{1} = Item Name \r\n{2} = Item Cost \r\n{3} = Points name",
+	"group": "Response Messages"
+	},
+	"notenough": {
+	"type": "textbox",
+	"value": "{0} -> you don't have the {1} {2} required to buy this item.",
+	"label": "Not enough points",
+	"tooltip": "Response when user doesn't have enough currency. \r\n{0} = user \r\n{1} = purchase cost\r\n{2} = currencyname\r\n{3} = user points",
+	"group": "Response Messages"
+	},
+	"notavailable": {
+	"type": "textbox",
+	"value": "{0} -> {1} isn't an available item.",
+	"label": "Item doesn't exist",
+	"tooltip": "Response when user tries to buy an item that isn't available \r\n{0} = user \r\n{1} = item user tried to buy\r\n",
+	"group": "Response Messages"
+	},
+	"notenabled": {
+	"type": "textbox",
+	"value": "{0} -> item {1} is currently disabled",
+	"label": "Item disabled",
+	"tooltip": "Response when user tries to buy an item that is disabled \r\n{0} = user \r\n{1} = item user tried to buy\r\n",
+	"group": "Response Messages"
+	},
+	"notperm": {
+	"type": "textbox",
+	"value": "{0} -> you don't have permission to use this command. permission is: [{1} / {2}]",
+	"label": "Not permitted",
+	"tooltip": "Message to send when the user permission doesn't match command permission \r\n{0} = user \r\n{1} = permission\r\n{2} = permission info",
+	"group": "Response Messages"
+	},
+	"quantitytoolow": {
+	"type": "textbox",
+	"value": "{0} -> there aren't any remaining copies of item {1}",
+	"label": "Quantity of item too low",
+	"tooltip": "Message to send when an item has ran out of copies \r\n{0} = user \r\n{1} = item user tried to buy",
+	"group": "Response Messages"
+	},
+	"incorrectusage": {
+	"type": "textbox",
+	"value": "{0} -> That command is designated for use in the following location: {1}",
+	"label": "Store info success",
+	"tooltip": "Response with item information chosen by user \r\n{0} = User \r\n{1} = Usage setting",
+	"group": "Response Messages"
+	},
+	"listbase": {
+	"type": "textbox",
+	"value": "There are currently {0} items in the store. Use [{1} info <#>] to learn about an item, or [{1} buy <#>] to buy an item",
+	"label": "!store message",
+	"tooltip": "The message shown before listing the items when using !store, without any parameters \r\n{0} = user\r\n{1} = command name",
+	"group": "Response Messages"
+	},
+	"atssuccess": {
+	"type": "textbox",
+	"value": "{1} (ID: {2}) has successfully been added by {0}!",
+	"label": "Add to store successful",
+	"tooltip": "Message sent to chat when '!store add' has succeeded \r\n{0} = user \r\n{1} = Item Name\r\n{2} = Item ID",
+	"group": "Response Messages"
+	},
+	"atsfailed": {
+	"type": "textbox",
+	"value": "Command failed. Command format: !store add <ItemType> <cost/default> <ItemName>",
+	"label": "Add to store failed",
+	"tooltip": "Message sent to chat when '!store add' has failed",
+	"group": "Response Messages"
+	},
+	"storeinfosuccess": {
+	"type": "textbox",
+	"value": "{0} -> {1} ({2}) is available for {4} {5}",
+	"label": "Store info success",
+	"tooltip": "Response with item information chosen by user \r\n{0} = User \r\n{1} = Item Name \r\n{2} = Item Type \r\n{3} = Item ID \r\n{4} = Item Cost \r\n{5} = Points Name",
+	"group": "Response Messages"
+	},
+	"StoreDelMsg": {
+	"type": "textbox",
+	"value": "Item {0} has been successfully deleted by {1}",
+	"label": "Store delete success",
+	"tooltip": "Response to confirm that an item has been deleted permanently\r\n{0} = ItemID\r\n{1} = user",
+	"group": "Response Messages"
+	},
+	"InvMsg": {
+	"type": "textbox",
+	"value": "{0}, the following items are in your inventory: {1}",
+	"label": "Inventory Report",
+	"tooltip": "Response to default '!store inventory' command that has list of items the user has\r\n{0} = user\r\n{1} = list of items",
+	"group": "Response Messages"
+	},
+	"EggsEnabled": {
+	"type": "checkbox",
+	"value": true,
+	"label": "Super secret easter eggs!",
+	"tooltip": "See if you can find them all! The prize is your sense of accomplishment",
+	"group": "Response Messages"
+	},
+	"helpmessageGeneral": {
+	"type": "textbox",
+	"value": "The available parameters for [{1} help function] are add, buy, delete, info, list, log, edit, and toggle",
+	"label": "General",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageBuy": {
+	"type": "textbox",
+	"value": "{0} -> Use [{1} buy #] to purchase an item. If the item has the 'contribute' type, you can put an amount to pay after specifying the item number",
+	"label": "Buying an item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageInfo": {
+	"type": "textbox",
+	"value": "{0} -> Use [{1} info #] to get a detailed information message about item #!",
+	"label": "Info Function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageList": {
+	"type": "textbox",
+	"value": "Use [{1} list page] to see a collection of items at once, with their name, item number, and cost",
+	"label": "List Function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageAdd": {
+	"type": "textbox",
+	"value": "[{1} add <ItemType> cost/default/dflt ItemName]. Add an item for viewers to purchase with {2}! You can also use [{1} toggle] to enable/disable an existing item in the store. Use {0} help add [general/once/code/contribute/unique] for more information.",
+	"label": "Adding an item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageAddGeneral": {
+	"type": "textbox",
+	"value": "[{1} add general cost/default ItemName] Use this function to add items that can be bought multiple times",
+	"label": "Adding a general type item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageAddContribute": {
+	"type": "textbox",
+	"value": "[{1} add contribute cost/default ItemName] Use this function to add items that can everyone can work together to purchase. Can also use 'ctb' as a short form for contribute",
+	"label": "Adding a 'contribute' type item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageAddUnique": {
+	"type": "textbox",
+	"value": "[{1} add unique cost/default ItemName] Use this function to add items that can only be purchased once per user.",
+	"label": "Adding a 'unique' type item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageOnce": {
+	"type": "textbox",
+	"value": "[{1} add once cost/default ItemName] Use this function to add items that can only be purchased once",
+	"label": "Adding a 'once' type item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageSession": {
+	"type": "textbox",
+	"value": "[{1} add session <cost/default> <ItemName>] Use this function to add items that can only be purchased once per session. A session ends when the script is restarted, or the bot is closed.",
+	"label": "Adding a 'session' type item",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageAddCode": {
+	"type": "textbox",
+	"value": "[{1} add code <cost/default> <ItemCode> <ItemName>] use this function to add items that contain a code, so the bot can send a whisper containing the code. Code items can only be purchased once",
+	"label": "General",
+	"tooltip": "Adding a 'code' type item",
+	"group": "Help Messages"
+	},
+	"helpmessageAddCode2": {
+	"type": "textbox",
+	"value": "Make sure there are no spaces in the ItemCode, or it won't save properly!",
+	"label": "Adding a 'code' type item. Item code warning",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageLog": {
+	"type": "textbox",
+	"value": "When you use [{1} log #], it will load the last # entries, and post them in chat. If no number is given, it will load the last 10 entries. If # is higher than the amount of entries, the bot will load as many as it can before returning an error message.",
+	"label": "Log function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageToggle": {
+	"type": "textbox",
+	"value": "Use [{1} toggle #] to enable or disable the purchase of an existing item! Useful if you have a once-off item that you want to make available, or you don't want a general item to be purchased for whatever reason",
+	"label": "Toggle function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageEdit": {
+	"type": "textbox",
+	"value": "[{1} edit <itemID> <DataType> <#>]. <DataType> can be an item's name, cost, permission, cooldown, or code",
+	"label": "Edit function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"helpmessageDelete": {
+	"type": "textbox",
+	"value": "Use [{1} delete #] to completely remove an item from the system, and allow another item to take its item ID. Once deleted, it can't be undone, so use with caution!",
+	"label": "Delete function",
+	"tooltip": "",
+	"group": "Help Messages"
+	},
+	"openfolder": {
+	"type": "button",
+	"label": "Open Script Directory",
+	"tooltip": "Opens the folder for this script",
+	"function": "OpenFolder",
+	"wsevent": "",
+	"group": "Buttons"
+	},
+	"openReadMe": {
+	"type": "button",
+	"label": "Open README.txt",
+	"tooltip": "Opens the README.txt for this script",
+	"function": "OpenReadMe",
+	"wsevent": "",
+	"group": "Buttons"
+	},
+	"OpenLog": {
+	"type": "button",
+	"label": "Open Store Log",
+	"tooltip": "Opens file recording all successful purchases",
+	"function": "OpenLog",
+	"wsevent": "",
+	"group": "Buttons"
+	},
+	"ResetLog": {
+	"type": "button",
+	"label": "Reset Store Log",
+	"tooltip": "Resets file recording all successful purchases.\r\nCANNOT BE UNDONE",
+	"function": "ResetLog",
+	"wsevent": "",
+	"group": "Buttons"
+	},
+	"setdefaults": {
+	"type": "button",
+	"label": "Restore Default Settings",
+	"tooltip": "Restores all script settings to the default ones!",
+	"function": "SetDefaults",
+	"wsevent": "",
+	"group": "Buttons"
+	}
+}
