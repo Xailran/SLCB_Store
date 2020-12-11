@@ -7,18 +7,18 @@
 	"tooltip": "Command is only active when stream is live.",
 	"group": "General"
 	},
+	"enabledDevMode": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Dev Mode Logging",
+	"tooltip": "Log things in the bot! (Next to error symbol)",
+	"group": "General"
+	},
 	"command": {
 	"type": "textbox",
 	"value": "!store",
 	"label": "Command name",
 	"tooltip": "The command the bot will respond to",
-	"group": "General"
-	},
-	"StoreBuyWhisp": {
-	"type": "checkbox",
-	"value": false,
-	"label": "Allow items to be bought via whisper",
-	"tooltip": "",
 	"group": "General"
 	},
 	"StoreInfoWhisp": {
@@ -81,7 +81,7 @@
 	"timerCooldown": {
 	"type": "numberbox",
 	"label": "Cooldown (seconds)",
-	"value": 30,
+	"value": 2,
 	"tooltip": "Cooldown timer in seconds.",
 	"group": "Cooldown"
 	},
@@ -95,7 +95,7 @@
 	"timerUserCooldown": {
 	"type": "numberbox",
 	"label": "User cooldown (seconds)",
-	"value": 60,
+	"value": 10,
 	"tooltip": "User Cooldown timer in seconds.\r\nNot yet functional for !store buy",
 	"group": "Cooldown"
 	},
@@ -112,6 +112,13 @@
 	"label": "Enable store purchases",
 	"tooltip": "Useful for allowing setup without allowing viewers to buy from the store",
 	"group": "Store Settings"
+	},
+	"StoreBuyWhisp": {
+	"type": "checkbox",
+	"value": false,
+	"label": "Allow items to be bought via whisper",
+	"tooltip": "If ticked, viewers will be able to send a whisper to the bot to buy items. Announcements of successful purchase will also be sent as a whisper",
+	"group": "General"
 	},
 	"atsdefaultcost": {
 	"type": "numberbox",
@@ -232,7 +239,7 @@
 	"type": "textbox",
 	"value": "{0} -> you don't have permission to use this command. permission is: [{1} / {2}]",
 	"label": "Not permitted",
-	"tooltip": "message to send when the user permission doesn't match command permission \r\n{0} = user \r\n{1} = permission\r\n{2} = Info",
+	"tooltip": "Message to send when the user permission doesn't match command permission \r\n{0} = user \r\n{1} = permission\r\n{2} = Info",
 	"group": "Response Messages"
 	},
 	"listbase": {

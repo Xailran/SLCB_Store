@@ -5,7 +5,6 @@
 #---------------------------------------
 # Libraries and references
 #---------------------------------------
-from collections import deque
 import codecs
 import json
 import os
@@ -19,7 +18,7 @@ import winsound
 ScriptName = "Store"
 Website = "https://www.twitch.tv/Xailran"
 Creator = "Xailran"
-Version = "1.3.0"
+Version = "1.4.0"
 Description = "Allow your viewers to spend points to buy items or perks that you create!"
 
 """
@@ -32,10 +31,11 @@ Finally, thank you to anyone who has given/gives feedback or helps me find bugs!
 # Versions
 #---------------------------------------
 """
-1.3.0 - Added [!store delete] function
-1.2.0 - Added Mixer and YT functionality!
-1.1.0 - Added [!store toggle] and [!store help] functions
-1.0.0 Initial Release! Please, give me all your feedback!!
+1.4.0 - Added "Contribute" item type
+1.3.0 - Added "delete" function
+1.2.0 - Added Mixer and YT functionality
+1.1.0 - Added "toggle" and "help" functions
+1.0.0 - Initial Release!
 
 Note: Only important updates are saved here. For more details, check the README.txt
 """
@@ -211,11 +211,14 @@ def Execute(data):
 			elif (data.GetParam(2).lower() == "once" or data.GetParam(2).lower() == "once-off"):
 				ItemType = "once"
 				StoreAdd(data, ItemType)
+			elif (data.GetParam(2).lower() == "contribute" or data.GetParam(2).lower() == "ctb"or data.GetParam(2).lower() == "cont"):
+				ItemType = "contribute"
+				StoreAdd(data, ItemType)
 			else:
 				message = MySet.atsfailed
 				SendResp(data, message)
 				if not (data.GetParam(2).lower() == ""):
-					message = "The valid item types are [General], [Once], or [Code]"
+					message = "The valid item types are [General], [Code], [Once], or [Contribute/CTB]"
 					SendResp(data, message)
 			
 		elif (data.GetParam(1).lower() == "buy"):
@@ -291,7 +294,7 @@ def LoadItem(data, ItemID):
 				ItemName = Item[1]
 				ItemType = Item[2]
 				ItemPermission = Item[3]
-				ItemCost = Item[4]
+				ItemCost = int(Item[4])
 				ItemCooldown = int(Item[5])
 				ItemCode = Item[6]
 			return True
@@ -306,37 +309,108 @@ def Purchase(data, ItemID):
 		message = "The streamer has all item purchases disabled currently."
 		SendResp(data, message)	
 	else:
-		command = "!store buy" + ItemID
+		command = "{0} buy".format(MySet.command)
 		if LoadItem(data, ItemID) and IsOnCooldown(data, command):
 			Currency = Parent.GetCurrencyName()
-			Points = Parent.GetPoints(data.User)
-			if not Parent.GetPoints(data.User) <= ItemCost:
-				message = MySet.notenough.format(data.UserName, ItemCost, Currency, Points)
-				SendResp(data, message)
-			elif (ItemSetting == "Disabled"):
+			Points = Parent.GetPoints(data.UserName)
+			if (ItemSetting == "Disabled"):
 				message = MySet.notenabled.format(data.UserName, ItemID)
 				SendResp(data, message)
-			else:
+				
+			elif (ItemType == "contribute"):
+				if not (data.GetParam(3) == ""):
+					try:
+						int(data.GetParam(3))
+					except:
+						message = "{0} -> Use [{1} buy <#> <amount>] when buying a 'contribute' type item!".format(data.UserName, MySet.command)
+						SendResp(data,message)
+					else:
+						CTB(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode, Currency, Points, command)
+				elif Parent.RemovePoints(data.User,data.UserName, ItemCost):
+					PurchaseSuccess(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode, Currency, Points, command)
+					CTBreset(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode, Currency, Points, command)
+				else:
+					message = "{0} -> Use [{1} buy <#> <amount>] when buying a 'contribute' type item!".format(data.UserName, MySet.command)
+					SendResp(data,message)
+					
+			elif Parent.RemovePoints(data.User,data.UserName, ItemCost):
+				"""All item types excluding contribute"""
 				PurchaseSuccess(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode, Currency, Points, command)
+			else:
+				message = MySet.notenough.format(data.UserName, ItemCost, Currency, Points)
+				SendResp(data, message)
+				
+def CTB(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode, Currency, Points, command):
+	"""Function for handling the "contribute" item type"""
+	CTBamount = int(data.GetParam(3))
+	if (int(data.GetParam(3)) >= ItemCost):
+		"""Check if user is paying equal to or in excess of the remaining cost. If yes, pay full amount"""
+		if (int(data.GetParam(3)) > ItemCost):
+			CTBamount = int(data.GetParam(3))
+			message = "{0} -> There is only {1} {2} remaining on this item. Reducing {3} to {1}...".format(data.UserName, ItemCost, Currency, CTBamount)
+			SendResp(data, message)
+		if Parent.RemovePoints(data.User,data.UserName, ItemCost):
+			PurchaseSuccess(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode, Currency, Points, command)
+			CTBreset(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode, Currency, Points, command)
+		else:
+			message = MySet.notenough.format(data.UserName, ItemCost, Currency, Points)
+			SendResp(data, message)
+			return
+	else:
+		"""Function for accepting contribution"""
+		if Parent.RemovePoints(data.User,data.UserName, CTBamount):
+			ItemCost = str(int(ItemCost) - CTBamount)
+			with codecs.open(ItemsPath, "w", "utf-8") as fRTC:
+				RTC = "Enabled" + "\r\n" + ItemName + "\r\n" + ItemType + "\r\n" + ItemPermission + "\r\n" + str(ItemCost) + "\r\n" + str(ItemCooldown) + "\r\n" + str(ItemCode)
+				fRTC.write(RTC)
+			message = "Thanks {0}! You have added {1} {2} to {3}, which now has {4} {2} remaining!".format(data.UserName, CTBamount, Currency, ItemName, ItemCost)
+			SendResp(data, message)
+			Points = Parent.GetPoints(data.User)
+			message = "Thanks for buying {0}. You now have {1} {2}".format(ItemName, Points, Currency)
+			if not data.IsFromYoutube():
+				Parent.SendStreamWhisper(data.UserName, message)
+			else:
+				SendResp(data, message)
+		else:
+			message = MySet.notenough.format(data.UserName, CTBamount, Currency, Points)
+			SendResp(data, message)
+			return
+		
+def CTBreset(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode, Currency, Points, command):
+	with codecs.open(ItemsPath, "w", "utf-8") as fResetCost:
+		ResetCost = "Disabled" + "\r\n" + ItemName + "\r\n" + ItemType + "\r\n" + ItemPermission + "\r\n" + str(ItemCode) + "\r\n" + str(ItemCooldown) + "\r\n" + str(ItemCode)
+		fResetCost.write(ResetCost)
+	
+def CTBthanks(data, ItemID, ItemName, ItemCost, Currency):
+	"""Function for thanking users who contributed to purchasing the item. WORK IN PROGRESS"""
+	message = "Thanks {0}, you've just paid the final amount of {1} {2} to purchase {3} for the stream!".format(data.UserName, ItemCost, Currency, ItemName)
+	Parent.SendStreamMessage(message)
 
 def PurchaseSuccess(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode, Currency, Points, command):
 	"""Process for a successful item purchase"""
-	SendResp(data, "Processing payment for " + ItemName + "...")
-	ItemCost = int(ItemCost)
-	Parent.RemovePoints(data.User,data.UserName, ItemCost)
+	if MySet.enabledDevMode:
+		SendResp(data, "Processing payment for " + ItemName + "...")
 	Parent.AddCooldown(ScriptName, command, ItemCooldown)
 	Parent.AddUserCooldown(ScriptName,command,data.User,MySet.timerUserCooldown)
-	message = MySet.itempurchasesuccess.format(data.UserName, ItemName, ItemCost, Currency)
-	SendResp(data, message)
-	Points = int(Points) - int(ItemCost)
-	message = "Thanks for buying {0}. You now have {1} {2} remaining".format(ItemName, Points, Currency)
+	if (ItemType == "contribute"):
+		CTBthanks(data, ItemID, ItemName, ItemCost, Currency)
+	else:
+		message = MySet.itempurchasesuccess.format(data.UserName, ItemName, ItemCost, Currency)
+		SendResp(data, message)
+	Points = Parent.GetPoints(data.User)
+	"""Sends message as whisper if not from youtube, else posts in chat"""
+	message = "Thanks for buying {0}. You now have {1} {2}".format(ItemName, Points, Currency)
 	if not data.IsFromYoutube():
 		Parent.SendStreamWhisper(data.UserName, message)
-	if (ItemType.lower() == "once") or (ItemType.lower() == "code"):
+	else:
+		SendResp(data, message)
+	"""Disables items with one use"""
+	if ((ItemType.lower() == "once") or (ItemType.lower() == "code") or (ItemType.lower() == "contribute")):
 		ItemDisable(data, ItemID, ItemName, ItemType, ItemPermission, ItemCost, ItemCooldown, ItemCode)
 		if (ItemType.lower() == "code"):
 			message = "Your code for redeeming {0} is {1}.".format(ItemName, ItemCode)
 			Parent.SendStreamWhisper(data.UserName, message)
+	"""Saves to log"""
 	if MySet.stf:
 		date = datetime.datetime.now().strftime("Date: %d/%m-%Y Time: %H:%M:%S")
 		textline = MySet.textline.format(data.UserName, ItemName, ItemCost, Currency, date)
@@ -359,6 +433,7 @@ def StoreInfo(data, ItemID, command):
 				SendResp(data, message)
 
 def StoreToggle(data):
+	"""Toggles whether an item is enabled or disabled"""
 	ItemID = data.GetParam(2)
 	if LoadItem(data, ItemID):
 		if (ItemSetting.lower() == "disabled"):
@@ -394,7 +469,7 @@ def StoreAdd(data, ItemType):
 		SendResp(data, message)
 		return
 	if ((Parameters <= 5) and (data.GetParam(3).lower() == "code")):
-		message = "Command failed. Command format: !store add code <cost/default> <ItemCode> <ItemName>. Make sure there are no spaces in the code, or it won't save properly!"
+		message = "Command failed. Command format: {0} add code <cost/default> <ItemCode> <ItemName>. Make sure there are no spaces in the code, or it won't save properly!".format(MySet.command)
 		SendResp(data, message)
 		return
 	ItemSetting = "Enabled"
@@ -413,6 +488,10 @@ def StoreAdd(data, ItemType):
 	ItemCooldown = MySet.timerCooldown
 	if (ItemType == "general") or (ItemType == "once"):
 		ItemCode = "None"
+		StrtParameters = 4
+		SaveItemName(data, ItemType, StrtParameters, Parameters)
+	elif (ItemType == "contribute"):
+		ItemCode = ItemCost
 		StrtParameters = 4
 		SaveItemName(data, ItemType, StrtParameters, Parameters)
 	elif (ItemType == "code"):
@@ -441,6 +520,7 @@ def StoreAdd(data, ItemType):
 	SendResp(data, message)
 	
 def SaveItemName(data, ItemType, StrtParameters, Parameters):
+	"""Function for collecting full item name"""
 	global ItemName
 	ItemName = ""
 	for StrtParameters in range (StrtParameters, Parameters):
@@ -450,16 +530,16 @@ def SaveItemName(data, ItemType, StrtParameters, Parameters):
 	
 def StoreLog(data):
 	"""Function to check last (x) purchases"""
-	"""!store log"""
 	if (data.GetParam(2) == ""):
+		"""!store log"""
 		global LogCount
-		LogCount = 11
+		LogCount = 10
 		SendResp(data, "No value given, assigning default value...")
-		"""!store log x"""
 	else:
+		"""!store log x"""
 		global LogCount
-		LogCount = (int(data.GetParam(2)) + 1)
-		if (int(data.GetParam(2)) >= 21):
+		LogCount = int(data.GetParam(2))
+		if (int(data.GetParam(2)) >= 20):
 			message = "Sorry, but there is a limit of 20 when using this command."
 			SendResp(data, message)
 			return
@@ -475,6 +555,9 @@ def StoreLog(data):
 	except:
 		message = "Tried to load more log data, but none exists!"
 		SendResp(data, message)
+	if MySet.enabledDevMode:
+		SendResp(data, "LogCount = " + LogCount)
+		Parent.Log(ScriptName,"LogCount = " + LogCount)
 		
 def StoreDelete(data, ItemID):
 	"""Deletes an item forever, freeing up its itemID to be used by the next item"""
@@ -509,13 +592,15 @@ def StoreDelete(data, ItemID):
 def StoreHelp(data, command):
 	"""Adds a variety of help responses"""
 	if (data.GetParam(2) == "add"):
-		if (data.GetParam(3) == "general"):
+		if (data.GetParam(3).lower() == "general"):
 			message = "[{0} add general <cost/default> <ItemName>] Use this function to add items that can be bought multiple times".format(MySet.command)
-		elif (data.GetParam(3) == "once"):
+		elif (data.GetParam(3).lower() == "once"):
 			message = "[{0} add once <cost/default> <ItemName>] Use this function to add items that can only be purchased once".format(MySet.command)
-		elif (data.GetParam(3) == "unique"):
+		elif (data.GetParam(3).lower() == "contribute" or data.GetParam(3).lower() == "ctb"):
+			message = "[{0} add contribute <cost/default> <ItemName>] Use this function to add items that can everyone can work together to purchase. Can also use 'ctb' as short form for contribute".format(MySet.command)
+		elif (data.GetParam(3).lower() == "unique"):
 			message = "New Item type for a future update! [{0} add unique <cost/default> <ItemName>] Use this function to add items that can only be purchased once per user.".format(MySet.command)
-		elif (data.GetParam(3) == "code"):
+		elif (data.GetParam(3).lower() == "code"):
 			message = "[{0} add code <cost/default> <ItemCode> <ItemName>] use this function to add items that contain a code, so the bot can send a whisper containing the code. Code items can only be purchased once".format(MySet.command)
 			if MySet.StoreHelpWhisp:
 				Parent.SendStreamWhisper(data.UserName,message)
@@ -523,7 +608,7 @@ def StoreHelp(data, command):
 				SendResp(data, message)
 			message = "Make sure there are no spaces in the <ItemCode>, or it won't save properly!"
 		else:
-			message = "[{0} add <ItemType> <cost/default> <ItemName>]. Add an item for viewers to purchase with {1}! You can also use !store toggle to enable/disable an existing item in the store. Use !store help add [general/once/code/unique] for more information.".format(MySet.command,Parent.GetCurrencyName())
+			message = "[{0} add <ItemType> <cost/default> <ItemName>]. Add an item for viewers to purchase with {1}! You can also use {0} toggle to enable/disable an existing item in the store. Use {0} help add [general/once/code/contribute/unique] for more information.".format(MySet.command,Parent.GetCurrencyName())
 	elif (data.GetParam(2) == "buy"):
 		message = MySet.info.format(data.UserName, MySet.command)
 	elif (data.GetParam(2) == "info"):
@@ -557,8 +642,8 @@ class Settings:
 				self.__dict__ = json.load(f, encoding='utf-8-sig')
 		else: #set variables if no custom settings file is found
 			self.onlylive = False
+			self.enabledDevMode = False
 			self.command = "!store"
-			self.StoreBuyWhisp = False
 			self.StoreInfoWhisp = True
 			self.StoreHelpWhisp = False
 			self.Permission = "Everyone"
@@ -567,11 +652,12 @@ class Settings:
 			self.castercd = True
 			self.usecd = True
 			self.HelpCooldown = False
-			self.timerCooldown = 30
+			self.timerCooldown = 2
 			self.oncooldown = "{0} the command is still on cooldown for {1} seconds!"
-			self.timerUserCooldown = 60
+			self.timerUserCooldown = 10
 			self.onusercooldown = "{0} the command is still on user cooldown for {1} seconds!"
 			self.purchaseallow = True
+			self.StoreBuyWhisp = False
 			self.atsdefaultcost = 5000
 			self.StoreAddPermission = "Editor"
 			self.StoreAddPermissionInfo = ""

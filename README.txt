@@ -9,7 +9,9 @@ Website: https://www.twitch.tv/xailran
 #############################
 #         Versions          #
 #############################
-1.3.0 - (Public Build 2) - Added [!store delete] function. Altered file saving system so that the delete function could be added, and for a bug fix. Rather than just increasing the item ID by 1 for every new item, the script will search for the lowest positive integer that it can set the item ID to.
+1.4.0 - (Public Build 3) Added "Contribute" item type!
+1.3.1 - Minor text changes, bug fixes
+1.3.0 - (Public Build 2) - Added [!store delete] function. Altered file saving system accordingly
 1.2.0 - Added Mixer and YouTube functionality
 1.1.2 - Commands can now be sent as whispers. Added toggle for allowing items to be bought through whispers.
 1.1.1 - Fixed user cooldowns to actually be used!
@@ -19,13 +21,20 @@ Website: https://www.twitch.tv/xailran
 1.0.1 - Minor bug fixes and text changes
 1.0.0 - Initial Release
 
+Recent bug fixes:
+Log now returns correct number of log entries
+Users without enough points can no longer buy items
+Upon successful purchase, users will be told the correct amount of points they have remaining
+
+Known bugs:
+None
 #####################
 #       Usage       #
 #####################
 	EDITOR ONLY
 !store add <ItemType> <cost/default> <Item Name>
 Adds a purchasable item for viewers. See below for specifics
-Default cost changes for each item type, changeable in UI
+Default cost is the same for each item type, and can be changed in the UI.
 
 !store log <#>
 Shows last <x> purchases (user, time of purchase, item)
@@ -41,8 +50,9 @@ Deletes an item permanently, allowing its item ID to be used by the next new ite
 WARNING: Once you delete an item, there is no going back! Make sure you are absolutely sure before using this command!!
 
 	ALL VIEWERS
-!store buy <#>
-Purchase item # in the store
+!store buy <#> (CTBvalue)
+Purchase item # in the store. 
+NEW - If the item is of the "contribute" item type, they need to specify how much they are contributing as their (CTBvalue). If the user has enough to pay off the full amount however, they don't need to include a (CTBvalue)
 
 !store info <#>
 Outputs ItemName, ItemType, and cost of the chosen id
@@ -50,9 +60,11 @@ Outputs ItemName, ItemType, and cost of the chosen id
 !store
 Shows how many items are currently in the store, and points to !store info and buy
 
-!store help <function>
+!store help <function> <function2>
 
 <function> = add, delete, log, toggle, buy, info
+For <function> = add;
+<function2> = general, once, code, contribute/ctb, unique
 
 ###########################
 #   Adding General Items  #
@@ -79,6 +91,15 @@ In a future update, editors (depending on your permission settings) will be able
 
 !store add once <cost/default> <ItemName>
 
+########################
+#   Contribute Items   #
+########################
+Once-off items, that the whole stream can work together to buy! Users choose how many points to put towards the item. Once the full price has been paid, the item will be disabled in the store, and reset to its original price.
+
+!store add contribute <cost/default> <ItemName>
+OR
+!store add ctb <cost/default> <ItemName>
+
 ####################
 #   Unique Items   #   COMING SOON
 ####################
@@ -89,8 +110,10 @@ Once-off items and general items put together! Unique items can be purchased an 
 ####################
 #  Future Updates  #
 ####################
-These are not in any particular order, just things I would like to add someday.
+These are not in any particular order, just things I would like to add someday. If you really want to see a particular update, let me know! 
 
+- Add some easter eggs! Eg. !store buy all
+- Add categories, or a way to display item types differently
 - Change !store info failed responses to follow whisper setting
 - Make more messages customizable
 - If enough people want it, I can add a toggle for "only when live" for each non-mod function (buy, help, info), rather than just the one toggle. The UI is already quite large, hence why I haven't added it already.
@@ -98,8 +121,10 @@ These are not in any particular order, just things I would like to add someday.
 - Add sound functionality
 - Add cuztomizable cooldown for general items. (As in, each general item can have its own cooldown, or follow the default)
 - Add Discord functionality
-- Add Mixer/YT functionality
-- Add [!store add unique <cost/default> <ItemName>]. The unique itemtype will be like general, where it can be bought multiple times, but only once per user. This is useful for items such as twitter follows, adding on snapchat, etc.
+- Add "Unique" item type. The unique itemtype will be like general, where it can be bought multiple times, but only once per user. This is useful for items such as twitter follows, adding on snapchat, etc.
+- Show top/all contributors to buying a "contribution" type item upon purchase of said item.
+
+By popular request, an inventory system of some sort will be added. I haven't figured out any of the details though. Continue to let me know if you want an inventory system; as more people ask for it, it becomes more important to do!
 
 2.0.0 update will be when data switches from being stored in a txt to a JSON
 - Add [!store convert <#>] command, so that all data can be transferred across without any loss
